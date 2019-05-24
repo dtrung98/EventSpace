@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "484469238312",
+    "firebase_url": "https://event-space-database.firebaseio.com",
+    "project_id": "event-space-database",
+    "storage_bucket": "event-space-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484469238312:android:7892142139d5750e",
+        "android_client_info": {
+          "package_name": "com.spacer.event"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484469238312-mhd67evddrrs45gkg7006qaf75p6d1v4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spacer.event",
+            "certificate_hash": "2183aea61aa3d54399d3216f50dc3b398c78e4b4"
+          }
+        },
+        {
+          "client_id": "484469238312-8l57a13oust51dfph9cu1kcrcca3f0sl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6MLvMFsduIYGbVX44oNmBJyQcaIfpvgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484469238312-8l57a13oust51dfph9cu1kcrcca3f0sl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

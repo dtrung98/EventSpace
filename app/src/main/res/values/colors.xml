@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="FlatWhite" type="color">#F5F5F5</item>
+    <color name= "SurfaceColor">#FFCC00</color>
+    <color name="BackwardColorHeavy">#B0000000</color>
+    <color name="backward_color">#DD000000</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name = "Gray">#22000000</color>
+    <color name="NearlyWhite">#44ffffff</color>
+    <color name="FlatRed">#FF3B30</color>
+    <color name="FlatGreen">#4CD964</color>
+    <color name="FlatOrange">#FF9500</color>
+    <color name="FlatYellow">#FFCC00</color>
+    <color name="FlatTealBlue">#5AC8FA</color>
+    <color name="FlatPurple">#5856D6</color>
+    <color name="FlatPink">#FF2D55</color>
+    <color name="FlatBlue">#007AFF</color>
+    <color name="DarkerBlack">#23202B</color>
+    <color name="ExpoBlack">#28262C</color>
+    <color name="HeavyOrange">#AF8700</color>
+    <color name="HeavyRed">#770000</color>
+    <color name="HeavyTealBlue">#0058AA</color>
+    <color name="HeavyYellow">#802D00</color>
+    <color name="HeavyGreen">#005800</color>
+    <color name="HeavyBlue">#00218B</color>
+    <color name="HeavyPurple">#162EA6</color>
+    <color name="HeavyPink">#B60024</color>
+    <color name="splash_color">@color/DarkerBlack</color>
+    <color name="bottom_navigation_color">#8823202B</color>
+
+</resources>

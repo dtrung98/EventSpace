@@ -1,0 +1,18 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@color/FlatWhite</item>
+        <item name="colorPrimary">@color/FlatWhite</item>
+        <item name="colorAccent">@color/FlatYellow</item>
+        <item name="android:actionOverflowButtonStyle">@style/Widget.ActionButton.Overflow</item>
+        <item name="colorControlHighlight">@color/ExpoBlack</item>
+        <item name="android:windowBackground">@color/DarkerBlack</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/DarkerBlack</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/launch_drawable</item>
+        <item name="android:navigationBarColor">@color/splash_color</item>
+    </style>
+</resources>
