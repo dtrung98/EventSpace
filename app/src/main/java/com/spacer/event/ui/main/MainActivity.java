@@ -130,14 +130,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_trending:
+                vibrate();
                 mBottomPager.setCurrentItem(0);
                 //  replaceFragment(mBottomAdapter.getItem(0),mBottomAdapter.getPageTitle(0).toString());
                 return true;
             case R.id.navigation_cinema:
+                vibrate();
                 mBottomPager.setCurrentItem(1);
                 // replaceFragment(mBottomAdapter.getItem(1),mBottomAdapter.getPageTitle(1).toString());
                 return true;
             case R.id.navigation_profile:
+                vibrate();
                 mBottomPager.setCurrentItem(2);
                 //  replaceFragment(mBottomAdapter.getItem(2),mBottomAdapter.getPageTitle(2).toString());
                 return true;
@@ -163,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public void onPageSelected(int i) {
+        vibrate();
         if(mBottomNavigationView!=null) {
             if (prevMenuItem != null)
                 prevMenuItem.setChecked(false);
