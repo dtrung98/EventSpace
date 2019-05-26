@@ -28,6 +28,8 @@
     <color name="HeavyPurple">#162EA6</color>
     <color name="HeavyPink">#B60024</color>
     <color name="splash_color">@color/DarkerBlack</color>
-    <color name="bottom_navigation_color">#8823202B</color>
+    <color name="bottom_navigation_color">#DD23202B</color>
+    <color name="FocusYellowColor">#D97F68</color>
+    <color name="DarkUnfocusColor">#6E6C6B</color>
 
 </resources>

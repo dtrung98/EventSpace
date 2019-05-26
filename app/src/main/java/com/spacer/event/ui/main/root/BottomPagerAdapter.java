@@ -1,4 +1,4 @@
-package com.spacer.event.ui.main.tabs;
+package com.spacer.event.ui.main.root;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.spacer.event.R;
+import com.spacer.event.ui.main.root.spacetab.SpaceTab;
 
 import java.util.ArrayList;
 

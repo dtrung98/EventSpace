@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/FlatPurple"
     android:clickable="true"
     android:focusable="true">
+    <View
+        android:id="@+id/status_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        />
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/status_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="24dp"
+        app:srcCompat="@drawable/ic_arrow_back_24dp"
+        android:background="@drawable/circle_background_support_touch"
+        android:padding="10dp"/>
 <TextView
+    android:id="@+id/sample"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
@@ -17,4 +37,13 @@
     android:textStyle="bold"
     android:textColor="@color/FlatWhite"
     android:text="Sample Page"/>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/sample"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:text="Go To Some Where" />
 </android.support.constraint.ConstraintLayout>

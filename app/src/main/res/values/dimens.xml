@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottom_navigation_content_height">56dp</dimen>
+    <dimen name="bottom_navigation_parent_height">57dp</dimen>
+    <dimen name="padding_for_tab_bottom_navigation">57dp</dimen>
+</resources>

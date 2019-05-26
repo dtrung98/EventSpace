@@ -74,7 +74,7 @@ public abstract class SupportFragment extends Fragment {
         this.presentStyle = presentStyle;
     }
 
-    public int getPresentTransition() {
+    public int createPresentStyle() {
         return PRESENT_STYLE_DEFAULT;
     }
     public boolean isReadyToDismiss(){

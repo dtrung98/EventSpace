@@ -8,13 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.spacer.event.R;
+import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SamplePage extends SupportFragment {
-    private static final String TAG = "SamplePage";
+public class SamplePageThree extends SupportFragment {
+    private static final String TAG = "SamplePageThree";
 
     @OnClick(R.id.back)
     void back() {
@@ -22,8 +24,9 @@ public class SamplePage extends SupportFragment {
     }
     @OnClick(R.id.button)
     void goToSomeWhere() {
-        getMainActivity().presentFragment(new SamplePageTwo());
+        getMainActivity().presentFragment(new SamplePage());
     }
+    @BindView(R.id.root) View mRoot;
 
     @Nullable
     @Override
@@ -35,6 +38,11 @@ public class SamplePage extends SupportFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
+        mRoot.setBackgroundResource(R.color.FlatOrange);
     }
 
+    @Override
+    public int createPresentStyle() {
+        return PresentStyle.GLIDE;
+    }
 }

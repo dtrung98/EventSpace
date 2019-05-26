@@ -1,4 +1,4 @@
-package com.spacer.event.ui.main.tabs;
+package com.spacer.event.ui.main.root;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,25 +10,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.spacer.event.R;
+import com.spacer.event.ui.main.MainActivity;
+import com.spacer.event.ui.main.page.SamplePage;
 import com.spacer.event.util.Tool;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class SpaceTab extends Fragment {
-    private static final String TAG = "SpaceTab";
+public class TrendingTab extends Fragment {
+    private static final String TAG = "TrendingTab";
 
     @BindView(R.id.status_bar) View mStatusBar;
 
-    public static SpaceTab newInstance() {
-        SpaceTab fragment = new SpaceTab();
+    public static TrendingTab newInstance() {
+        TrendingTab fragment = new TrendingTab();
         return fragment;
+    }
+
+    @OnClick(R.id.sample_button)
+    void goToAPage() {
+        if(getActivity() instanceof MainActivity)
+            ((MainActivity)getActivity()).presentFragment(new SamplePage());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.space_tab, container, false);
+        return inflater.inflate(R.layout.trending_tab, container, false);
     }
 
     @Override
@@ -43,4 +52,5 @@ public class SpaceTab extends Fragment {
         mStatusBar.getLayoutParams().height = Tool.getStatusHeight(getResources());
         mStatusBar.requestLayout();
     }
+
 }

@@ -1,15 +1,8 @@
 package com.spacer.event.ui.main;
 
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -17,31 +10,17 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.spacer.event.R;
-import com.spacer.event.ui.main.tabs.BottomPagerAdapter;
-import com.spacer.event.ui.widget.fragmentnavigationcontroller.BlankFragment;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.FragmentNavigationController;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 import com.spacer.event.util.Tool;
 
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment.PRESENT_STYLE_DEFAULT;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity   {
     private static final String TAG = "MainActivity";
-
-    @BindView(R.id.view_pager)
-    ViewPager mBottomPager;
-
-    @BindView(R.id.bottom_navigation_parent)
-    View mBottomNavigationParent;
-
-    @BindView(R.id.bottom_navigation_view)
-    BottomNavigationView mBottomNavigationView;
-
-    BottomPagerAdapter mBottomAdapter;
 
     FragmentNavigationController mNavigationController;
     FirebaseAuth mAuth;
@@ -61,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if(isNavigationControllerInit()) {
 //            Random r = new Random();
 //            mNavigationController.setPresentStyle(r.nextInt(39)+1); //exclude NONE present style
-            mNavigationController.setPresentStyle(fragment.getPresentTransition());
+            mNavigationController.setPresentStyle(fragment.createPresentStyle());
             mNavigationController.presentFragment(fragment, true);
         }
     }
@@ -72,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mNavigationController.setPresentStyle(PRESENT_STYLE_DEFAULT);
         mNavigationController.setDuration(250);
         mNavigationController.setInterpolator(new AccelerateDecelerateInterpolator());
-        mNavigationController.presentFragment(new BlankFragment());
+        mNavigationController.presentFragment(new MainFragment());
     }
 
     public void dismiss() {
@@ -111,14 +90,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
         ButterKnife.bind(this);
 
-        vibrator  = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        mBottomAdapter = new BottomPagerAdapter(this,getSupportFragmentManager());
-        mBottomPager.setAdapter(mBottomAdapter);
-        mBottomPager.setOffscreenPageLimit(3);
-        mBottomPager.addOnPageChangeListener(this);
-
-        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
         initBackStack(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
@@ -126,62 +98,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.navigation_trending:
-                vibrate();
-                mBottomPager.setCurrentItem(0);
-                //  replaceFragment(mBottomAdapter.getItem(0),mBottomAdapter.getPageTitle(0).toString());
-                return true;
-            case R.id.navigation_cinema:
-                vibrate();
-                mBottomPager.setCurrentItem(1);
-                // replaceFragment(mBottomAdapter.getItem(1),mBottomAdapter.getPageTitle(1).toString());
-                return true;
-            case R.id.navigation_profile:
-                vibrate();
-                mBottomPager.setCurrentItem(2);
-                //  replaceFragment(mBottomAdapter.getItem(2),mBottomAdapter.getPageTitle(2).toString());
-                return true;
-        }
-        return false;
-    }
-
-    Vibrator vibrator;
-    private void vibrate() {
-        if (Build.VERSION.SDK_INT >= 26) {
-            vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            vibrator.vibrate(50);
-        }
-    }
-
-
-    @Override
-    public void onPageScrolled(int i, float v, int i1) {
-
-    }
-    MenuItem prevMenuItem;
-
-    @Override
-    public void onPageSelected(int i) {
-        vibrate();
-        if(mBottomNavigationView!=null) {
-            if (prevMenuItem != null)
-                prevMenuItem.setChecked(false);
-            else
-                mBottomNavigationView.getMenu().getItem(0).setChecked(false);
-
-            mBottomNavigationView.getMenu().getItem(i).setChecked(true);
-            prevMenuItem = mBottomNavigationView.getMenu().getItem(i);
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int i) {
-
-    }
 
     @Override
     protected void onDestroy() {

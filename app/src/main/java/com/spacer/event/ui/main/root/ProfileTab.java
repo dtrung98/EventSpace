@@ -1,4 +1,4 @@
-package com.spacer.event.ui.main.tabs;
+package com.spacer.event.ui.main.root;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
