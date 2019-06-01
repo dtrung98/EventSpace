@@ -15,8 +15,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SamplePageTwo extends SupportFragment {
+public class SearchPage extends SupportFragment {
     private static final String TAG = "SamplePage";
+
+    public static SearchPage newInstance() {
+
+        SearchPage fragment = new SearchPage();
+
+        return fragment;
+    }
 
     @OnClick(R.id.back)
     void back() {
@@ -39,11 +46,16 @@ public class SamplePageTwo extends SupportFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
-        mRoot.setBackgroundResource(R.color.FlatGreen);
+        mRoot.setBackgroundResource(R.color.DarkerBlack);
     }
 
     @Override
     public int defaultPresentStyle() {
         return PresentStyle.SLIDE_UP;
+    }
+
+    @Override
+    public boolean useOpenAsExitPresentStyle() {
+        return false;
     }
 }

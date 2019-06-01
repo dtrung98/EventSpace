@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
  */
 public abstract class SupportFragment extends Fragment {
     private static final String TAG ="SupportFragment";
+    private static final int DEFAULT_DURATION = 250;
     public static int PRESENT_STYLE_DEFAULT = PresentStyle.ACCORDION_LEFT;
 
     private WeakReference<FragmentNavigationController> weakFragmentNaviagationController = null;
@@ -29,10 +30,21 @@ public abstract class SupportFragment extends Fragment {
     private AndroidFragmentFrameLayout innerRootLayout = null;
     private View contentView = null;
     private PresentStyle presentStyle = null;
+    private PresentStyle exitPresentStyle = null;
+
+    public boolean useOpenAsExitPresentStyle() {
+        return true;
+    }
+
     public boolean isWhiteTheme(boolean current) {
         saveTheme(current);
         return true;
     }
+
+    public final PresentStyle getPresentStyle() {
+        return presentStyle;
+    }
+
     public boolean getSavedTheme() {
         return savedTheme;
     }
@@ -70,13 +82,22 @@ public abstract class SupportFragment extends Fragment {
         this.animatable = animatable;
     }
 
-   protected void setPresentStyle(PresentStyle presentStyle) {
+ /*  protected void setPresentStyle(PresentStyle presentStyle) {
         this.presentStyle = presentStyle;
-    }
+    }*/
 
-    public int createPresentStyle() {
+    public int defaultPresentStyle() {
         return PRESENT_STYLE_DEFAULT;
     }
+
+    public void setExitPresentStyle(PresentStyle exitPresentStyle) {
+        this.exitPresentStyle = exitPresentStyle;
+    }
+
+    public int defaultDuration() {
+        return DEFAULT_DURATION;
+    }
+
     public boolean isReadyToDismiss(){
         return true;
     }
@@ -97,6 +118,7 @@ public abstract class SupportFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        presentStyle = PresentStyle.get(defaultPresentStyle());
         onSetStatusBarMargin(getStatusHeight(getResources()));
     }
 
@@ -138,7 +160,7 @@ public abstract class SupportFragment extends Fragment {
 
     @Override
     public Animator onCreateAnimator(final int transit, final boolean enter, int nextAnim) {
-        if(animatable == false) {
+        if(!animatable) {
             animatable = true;
             return null;
         }
@@ -159,7 +181,10 @@ public abstract class SupportFragment extends Fragment {
                 int id = presentStyle.getOpenEnterAnimatorId();
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             } else {
-                int id = presentStyle.getOpenExitAnimatorId();
+                int id;
+                if(useOpenAsExitPresentStyle()||exitPresentStyle==null)
+                    id = presentStyle.getOpenExitAnimatorId();
+                else id = exitPresentStyle.getOpenExitAnimatorId();
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             }
 
@@ -169,13 +194,16 @@ public abstract class SupportFragment extends Fragment {
                 int id = presentStyle.getCloseEnterAnimatorId();
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             } else {
-                int id = presentStyle.getCloseExitAnimatorId();
+                int id;
+                if(useOpenAsExitPresentStyle()||exitPresentStyle == null)
+                id = presentStyle.getCloseExitAnimatorId();
+                else id = exitPresentStyle.getCloseExitAnimatorId();
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             }
         }
         if(animator != null) {
             animator.setInterpolator(nav.getInterpolator());
-            animator.setDuration(nav.getDuration());
+            animator.setDuration(defaultDuration());
         }
 
         animator.addListener(new Animator.AnimatorListener() {

@@ -3,19 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <corners android:radius="60dp"/>
+            <corners android:radius="6dp"/>
             <solid android:color="#88ff9500"/>
-
         </shape>
         <color android:color="@android:color/white"/>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="60dp"/>
-            <solid android:color="#FAF3DD" />
-            <stroke
-                android:width="2dp"
-                android:color="@color/FocusYellowColor"/>
+            <corners android:radius="6dp"/>
         </shape>
     </item>
 </ripple>

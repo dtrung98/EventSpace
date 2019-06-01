@@ -11,13 +11,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.FragmentNavigationController;
+import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 import com.spacer.event.util.Tool;
 
 
 import butterknife.ButterKnife;
-
-import static com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment.PRESENT_STYLE_DEFAULT;
 
 public class MainActivity extends AppCompatActivity   {
     private static final String TAG = "MainActivity";
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity   {
         if(isNavigationControllerInit()) {
 //            Random r = new Random();
 //            mNavigationController.setPresentStyle(r.nextInt(39)+1); //exclude NONE present style
-            mNavigationController.setPresentStyle(fragment.createPresentStyle());
+
             mNavigationController.presentFragment(fragment, true);
         }
     }
@@ -48,8 +47,6 @@ public class MainActivity extends AppCompatActivity   {
     private void initBackStack(Bundle savedInstanceState) {
         FragmentManager fm = getSupportFragmentManager();
         mNavigationController = FragmentNavigationController.navigationController(fm, R.id.container);
-        mNavigationController.setPresentStyle(PRESENT_STYLE_DEFAULT);
-        mNavigationController.setDuration(250);
         mNavigationController.setInterpolator(new AccelerateDecelerateInterpolator());
         mNavigationController.presentFragment(new MainFragment());
     }

@@ -25,9 +25,8 @@ public class FragmentNavigationController extends SupportFragment {
     private Stack<SupportFragment> fragmentStack = new Stack<>();
     private @IdRes int containerViewId;
     private Object sync = new Object();
-    private PresentStyle presentStyle = PresentStyle.get(PresentStyle.NONE);
+
     private TimeInterpolator interpolator = new LinearInterpolator();
-    private long duration = 500;
 
     public static FragmentNavigationController navigationController(@NonNull FragmentManager fragmentManager, @IdRes int containerViewId) {
         return new FragmentNavigationController(fragmentManager, containerViewId);
@@ -62,50 +61,18 @@ public class FragmentNavigationController extends SupportFragment {
     }
 
 
-    /**
-     * set the present style
-     * @param style
-     */
-    public void setPresentStyle(int style) {
-        presentStyle = PresentStyle.get(style);
-    }
-
-    /**
-     * for setting of user defined PrensetStyle
-     * @param style
-     */
-    public void setPresentStyle(PresentStyle style) {
-        presentStyle = style;
-    }
-
-    PresentStyle getPresentStyle() {
-        return presentStyle;
-    }
-
     public void setInterpolator(TimeInterpolator interpolator) {
         this.interpolator = interpolator;
     }
 
-    public void setDuration(long presentDuration) {
-        duration = presentDuration;
-    }
 
     TimeInterpolator getInterpolator() {
         return interpolator;
     }
 
-    long getDuration() {
-        return duration;
-    }
-
     public void pushFragment(SupportFragment fragment) {
-        PresentStyle oldPresetStyle = presentStyle;
-        setDuration(300);
         setInterpolator(new AccelerateDecelerateInterpolator());
-        setPresentStyle(PresentStyle.SLIDE_LEFT);
         presentFragment(fragment);
-        presentStyle = oldPresetStyle;
-        setPresentStyle(presentStyle);
     }
 
     public void popFragment() {
@@ -125,7 +92,6 @@ public class FragmentNavigationController extends SupportFragment {
             if (fragmentStack.size() == 0) {
                 fragment.setNavigationController(this);
                 fragment.setAnimatable(false);
-                fragment.setPresentStyle(presentStyle);
                 fragmentManager
                         .beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -135,8 +101,8 @@ public class FragmentNavigationController extends SupportFragment {
             } else {
 
                 fragment.setNavigationController(this);
+                getTopFragment().setExitPresentStyle(fragment.getPresentStyle());
                 fragment.setAnimatable(withAnimation);
-                fragment.setPresentStyle(presentStyle);
                 // hide last fragment and add new fragment
                 SupportFragment hideFragment = fragmentStack.peek();
                 hideFragment.onHideFragment();

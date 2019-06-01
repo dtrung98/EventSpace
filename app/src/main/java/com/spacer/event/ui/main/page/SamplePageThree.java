@@ -42,7 +42,7 @@ public class SamplePageThree extends SupportFragment {
     }
 
     @Override
-    public int createPresentStyle() {
+    public int defaultPresentStyle() {
         return PresentStyle.GLIDE;
     }
 }

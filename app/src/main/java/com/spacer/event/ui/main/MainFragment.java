@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.spacer.event.R;
 import com.spacer.event.ui.main.root.BottomPagerAdapter;
+import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
 import butterknife.BindView;
@@ -49,7 +50,7 @@ public class MainFragment extends SupportFragment implements BottomNavigationVie
 
         vibrator  = (Vibrator) getMainActivity().getSystemService(VIBRATOR_SERVICE);
 
-        mBottomAdapter = new BottomPagerAdapter(getMainActivity(),getFragmentManager());
+        mBottomAdapter = new BottomPagerAdapter(getMainActivity(),getChildFragmentManager());
         mBottomPager.setAdapter(mBottomAdapter);
         mBottomPager.setOffscreenPageLimit(3);
         mBottomPager.addOnPageChangeListener(this);
@@ -112,5 +113,10 @@ public class MainFragment extends SupportFragment implements BottomNavigationVie
     @Override
     public void onPageScrollStateChanged(int i) {
 
+    }
+
+    @Override
+    public int defaultPresentStyle() {
+        return PresentStyle.FADE;
     }
 }

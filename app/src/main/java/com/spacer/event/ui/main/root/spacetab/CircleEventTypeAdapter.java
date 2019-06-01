@@ -91,13 +91,15 @@ public class CircleEventTypeAdapter extends RecyclerView.Adapter<CircleEventType
     public class ItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.image)
         ImageView mImage;
+        @BindView(R.id.title)
+        TextView mTitle;
 
         public ItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
 
-        @OnClick(R.id.image)
+        @OnClick({R.id.image,R.id.root})
         void clickPanel() {
             if(mListener!=null) mListener.onItemClick(mData.get(getAdapterPosition()));
             else if(mContext instanceof MainActivity) {
@@ -107,6 +109,7 @@ public class CircleEventTypeAdapter extends RecyclerView.Adapter<CircleEventType
         }
 
         public void bind(EventType eventType) {
+            mTitle.setText(eventType.getName());
             Glide.with(mContext)
                     .load(eventType.getIcon())
                     .into(mImage);

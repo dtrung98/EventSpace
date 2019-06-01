@@ -18,12 +18,15 @@ import com.spacer.event.R;
 import com.spacer.event.listener.FireBaseCollectionListener;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Space;
+import com.spacer.event.ui.main.MainActivity;
+import com.spacer.event.ui.main.page.SearchPage;
 import com.spacer.event.util.Tool;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SpaceTab extends Fragment {
     private static final String TAG = "SpaceTab";
@@ -44,6 +47,17 @@ public class SpaceTab extends Fragment {
 
     SpaceAdapter mSpaceAdapter;
     CircleEventTypeAdapter mEventTypeAdapter;
+
+    @OnClick(R.id.search_panel)
+    void goToSearchPage() {
+        if(getActivity() instanceof MainActivity)
+        ((MainActivity)getActivity()).presentFragment(SearchPage.newInstance());
+    }
+
+    @OnClick(R.id.see_all_panel)
+    void seeAllEvents() {
+
+    }
 
     public static SpaceTab newInstance() {
         return new SpaceTab();
