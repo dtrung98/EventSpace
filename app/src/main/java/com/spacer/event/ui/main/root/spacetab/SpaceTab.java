@@ -20,7 +20,7 @@ import com.spacer.event.listener.FireBaseCollectionListener;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Space;
 import com.spacer.event.ui.main.MainActivity;
-import com.spacer.event.ui.main.page.EventsListFragment;
+import com.spacer.event.ui.main.page.EventListFragment;
 import com.spacer.event.ui.main.page.SearchFragment;
 import com.spacer.event.util.Tool;
 
@@ -61,7 +61,7 @@ public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedLi
     @OnClick(R.id.see_all_panel)
     void seeAllEvents() {
         if(getActivity() instanceof MainActivity)
-            ((MainActivity)getActivity()).presentFragment(EventsListFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData()));
+            ((MainActivity)getActivity()).presentFragment(EventListFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData()));
     }
 
     public static SpaceTab newInstance() {

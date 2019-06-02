@@ -23,10 +23,11 @@
         app:layout_constraintTop_toBottomOf="@id/status_bar"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         app:srcCompat="@drawable/ic_arrow_back_24dp"
         android:background="@drawable/circle_background_support_touch"
-        android:padding="10dp"/>
+        android:alpha="0.8"
+        android:padding="12dp"/>
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
@@ -40,7 +41,11 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:textColor="@android:color/white"
-        android:padding="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:fontFamily="@font/hevetica_font"
         />
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"

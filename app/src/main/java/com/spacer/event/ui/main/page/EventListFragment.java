@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import com.spacer.event.R;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Service;
 import com.spacer.event.model.Space;
-import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
 import java.util.ArrayList;
@@ -23,10 +21,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EventsListFragment extends SupportFragment{
+public class EventListFragment extends SupportFragment{
 
-    public static EventsListFragment newInstance(List<Space> spaces, List<EventType> eventTypes) {
-        EventsListFragment fragment = new EventsListFragment();
+    public static EventListFragment newInstance(List<Space> spaces, List<EventType> eventTypes) {
+        EventListFragment fragment = new EventListFragment();
         if(spaces!=null) fragment.mSpaces.addAll(spaces);
         if(eventTypes!=null) fragment.mEventTypes.addAll(eventTypes);
         return fragment;
