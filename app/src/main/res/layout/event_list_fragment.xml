@@ -48,16 +48,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         tools:listitem="@layout/item_event_list"
-        tools:layoutManager="GridLayoutManager"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:overScrollMode="never"
-        tools:spanCount="2"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_event_list"
+            tools:layoutManager="GridLayoutManager"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:overScrollMode="never"
+            tools:spanCount="2"/>
     </android.support.v4.widget.SwipeRefreshLayout>
     <ImageView
         android:id="@+id/back"
