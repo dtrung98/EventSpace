@@ -30,6 +30,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ItemHolder> 
     public List<EventType> getData() {
         return mData;
     }
+    public ArrayList<Integer> mCountData = new ArrayList<>();
 
     public interface EventTypeListener {
         void onItemClick(EventType eventType);
@@ -62,6 +63,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ItemHolder> 
         notifyDataSetChanged();
     }
 
+    public void setCountData(List<Integer> data) {
+        mCountData.clear();
+        if(data!=null) {
+            mCountData.addAll(data);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void setData(List<EventType> data,boolean notify) {
+        mData.clear();
+        if (data !=null) {
+            mData.addAll(data);
+        }
+        if(notify)
+        notifyDataSetChanged();
+    }
+
+    public void setCountData(List<Integer> data, boolean notify) {
+        mCountData.clear();
+        if(data!=null) {
+            mCountData.addAll(data);
+        }
+        if(notify)
+            notifyDataSetChanged();
+    }
+
     public void addData(List<EventType> data) {
         if(data!=null) {
             int posBefore = mData.size();
@@ -74,7 +101,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ItemHolder> 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_circler_event_type, parent, false);
+        View view = inflater.inflate(R.layout.item_event_list, parent, false);
 
         return new ItemHolder(view);
     }
@@ -96,12 +123,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ItemHolder> 
         @BindView(R.id.title)
         TextView mTitle;
 
+        @BindView(R.id.description) TextView mDescription;
+
         public ItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
 
-        @OnClick({R.id.image,R.id.root})
+        @OnClick({R.id.image,R.id.constraint_root})
         void clickPanel() {
             if(mListener!=null) mListener.onItemClick(mData.get(getAdapterPosition()));
             else if(mContext instanceof MainActivity) {
@@ -115,6 +144,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ItemHolder> 
             Glide.with(mContext)
                     .load(eventType.getIcon())
                     .into(mImage);
+
+            if(mCountData.size()-1>getAdapterPosition()&&mCountData.get(getAdapterPosition())>0) {
+                mDescription.setText(mCountData.get(getAdapterPosition())+" "+ mDescription.getResources().getString(R.string.spaces_lower));
+            }
+            else mDescription.setText("");
 
         }
     }

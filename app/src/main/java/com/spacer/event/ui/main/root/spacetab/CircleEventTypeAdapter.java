@@ -1,6 +1,5 @@
 package com.spacer.event.ui.main.root.spacetab;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nex3z.flowlayout.FlowLayout;
 import com.spacer.event.R;
 import com.spacer.event.model.EventType;
 import com.spacer.event.ui.main.MainActivity;
@@ -76,7 +74,7 @@ public class CircleEventTypeAdapter extends RecyclerView.Adapter<CircleEventType
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_circler_event_type, parent, false);
+        View view = inflater.inflate(R.layout.item_event_in_space_tab, parent, false);
 
         return new ItemHolder(view);
     }

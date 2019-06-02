@@ -70,7 +70,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:itemCount="5"
-                    tools:listitem="@layout/item_circler_event_type"
+                    tools:listitem="@layout/item_event_in_space_tab"
                     tools:layoutManager="LinearLayoutManager"
                     tools:orientation="horizontal"
                     android:layout_marginTop="8dp"

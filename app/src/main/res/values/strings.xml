@@ -7,6 +7,7 @@
     <string name="profile">Profile</string>
     <string name="facebook_app_id">442156039699625</string> <string name="fb_login_protocol_scheme">fb442156039699625</string>
     <string name="spaces">Spaces</string>
+    <string name="spaces_lower">spaces</string>
     <string name="filter_string">What events you would like to find?</string>
     <string name="see_all">See all</string>
     <string name="middle_dot" translatable="false">•</string>
