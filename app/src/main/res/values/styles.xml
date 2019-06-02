@@ -15,4 +15,12 @@
         <item name="android:windowBackground">@drawable/launch_drawable</item>
         <item name="android:navigationBarColor">@color/splash_color</item>
     </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textSize">15sp</item>
+       <!-- <item name="android:textStyle">bold</item>-->
+        <item name="android:textColor">#eee</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
 </resources>

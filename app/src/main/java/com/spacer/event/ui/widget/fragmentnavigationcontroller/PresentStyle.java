@@ -223,7 +223,7 @@ public class PresentStyle {
     }
 
     private static PresentStyle Glide() {
-        return new PresentStyle(R.animator.glide_fragment_horizontal_in, R.animator.glide_fragment_horizontal_out, R.animator.glide_fragment_horizontal_in, R.animator.glide_fragment_horizontal_out);
+        return new PresentStyle(R.animator.glide_fragment_horizontal_in, R.animator.accordion_left_out, R.animator.accordion_left_in, R.animator.glide_fragment_horizontal_out);
     }
 
     private static PresentStyle RotateDownLeft() {

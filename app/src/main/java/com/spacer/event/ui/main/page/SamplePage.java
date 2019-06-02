@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
+import java.util.Random;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -37,4 +39,13 @@ public class SamplePage extends SupportFragment {
         ButterKnife.bind(this,view);
     }
 
+    int p = -1;
+    @Override
+    public int defaultPresentStyle() {
+        if(p==-1) {
+            Random r = new Random();
+            p = r.nextInt(39) + 1; //exclude NONE present style
+        }
+        return p;
+    }
 }

@@ -29,6 +29,10 @@ public class CircleEventTypeAdapter extends RecyclerView.Adapter<CircleEventType
     private boolean mAdminMode = false;
     private ArrayList<EventType> mData = new ArrayList<>();
 
+    public List<EventType> getData() {
+        return mData;
+    }
+
     public interface EventTypeListener {
         void onItemClick(EventType eventType);
     }

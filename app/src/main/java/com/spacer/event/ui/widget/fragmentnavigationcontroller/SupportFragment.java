@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference;
  */
 public abstract class SupportFragment extends Fragment {
     private static final String TAG ="SupportFragment";
-    private static final int DEFAULT_DURATION = 250;
+    private static final int DEFAULT_DURATION = 275;
     public static int PRESENT_STYLE_DEFAULT = PresentStyle.ACCORDION_LEFT;
 
     private WeakReference<FragmentNavigationController> weakFragmentNaviagationController = null;
@@ -33,7 +33,7 @@ public abstract class SupportFragment extends Fragment {
     private PresentStyle exitPresentStyle = null;
 
     public boolean useOpenAsExitPresentStyle() {
-        return true;
+        return false;
     }
 
     public boolean isWhiteTheme(boolean current) {
@@ -42,6 +42,7 @@ public abstract class SupportFragment extends Fragment {
     }
 
     public final PresentStyle getPresentStyle() {
+        if(presentStyle==null) presentStyle = PresentStyle.get(defaultPresentStyle());
         return presentStyle;
     }
 
@@ -191,13 +192,14 @@ public abstract class SupportFragment extends Fragment {
         } else {
 
             if (enter) {
-                int id = presentStyle.getCloseEnterAnimatorId();
+                int id;
+                if(useOpenAsExitPresentStyle()||exitPresentStyle == null)
+                id = presentStyle.getCloseEnterAnimatorId();
+                else id = exitPresentStyle.getCloseEnterAnimatorId();
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             } else {
                 int id;
-                if(useOpenAsExitPresentStyle()||exitPresentStyle == null)
                 id = presentStyle.getCloseExitAnimatorId();
-                else id = exitPresentStyle.getCloseExitAnimatorId();
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             }
         }

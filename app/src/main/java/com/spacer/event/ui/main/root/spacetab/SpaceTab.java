@@ -3,6 +3,7 @@ package com.spacer.event.ui.main.root.spacetab;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +20,8 @@ import com.spacer.event.listener.FireBaseCollectionListener;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Space;
 import com.spacer.event.ui.main.MainActivity;
-import com.spacer.event.ui.main.page.SearchPage;
+import com.spacer.event.ui.main.page.EventsListFragment;
+import com.spacer.event.ui.main.page.SearchFragment;
 import com.spacer.event.util.Tool;
 
 import java.util.ArrayList;
@@ -28,10 +30,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SpaceTab extends Fragment {
+public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedListener {
     private static final String TAG = "SpaceTab";
 
     @BindView(R.id.root) View mRoot;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
     
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -51,12 +55,13 @@ public class SpaceTab extends Fragment {
     @OnClick(R.id.search_panel)
     void goToSearchPage() {
         if(getActivity() instanceof MainActivity)
-        ((MainActivity)getActivity()).presentFragment(SearchPage.newInstance());
+        ((MainActivity)getActivity()).presentFragment(SearchFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData()));
     }
 
     @OnClick(R.id.see_all_panel)
     void seeAllEvents() {
-
+        if(getActivity() instanceof MainActivity)
+            ((MainActivity)getActivity()).presentFragment(EventsListFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData()));
     }
 
     public static SpaceTab newInstance() {
@@ -75,16 +80,20 @@ public class SpaceTab extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         init();
-        mSwipeRefresh.setOnRefreshListener(this::refreshData);
-        mSwipeRefresh.setColorSchemeResources(R.color.FlatOrange);
-        mSwipeRefresh.setProgressViewOffset(true,mSwipeRefresh.getProgressViewStartOffset(),mSwipeRefresh.getProgressViewEndOffset());
-      //  mSwipeRefresh.setProgressBackgroundColorSchemeResource(R.color.FocusYellowColor);
-        mSwipeRefresh.setRefreshing(true);
+
         refreshData();
     }
+    @BindView(R.id.search_parent) View mSearchParent;
 
     public void init() {
-        mRoot.setPadding(0,Tool.getStatusHeight(getResources()),0,0);
+
+        int statusHeight = Tool.getStatusHeight(getResources());
+        if(statusHeight!= (int)getResources().getDimension(R.dimen.default_status_height)) {
+            mSearchParent.setPadding(0,statusHeight,0,0);
+            ((ViewGroup.MarginLayoutParams)mFilterPanel.getLayoutParams()).topMargin = (int) (getResources().getDimension(R.dimen.search_panel_height)+statusHeight);
+            mFilterPanel.requestLayout();
+        }
+
         mSpaceAdapter = new SpaceAdapter(getActivity());
         mSpaceRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         mSpaceRecyclerView.setAdapter(mSpaceAdapter);
@@ -92,6 +101,25 @@ public class SpaceTab extends Fragment {
         mEventTypeAdapter = new CircleEventTypeAdapter(getActivity());
         mFilterRecyclerView.setAdapter(mEventTypeAdapter);
         mFilterRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+
+        mSwipeRefresh.setOnRefreshListener(this::refreshData);
+
+        mSwipeRefresh.setColorSchemeResources(R.color.FlatOrange);
+        mSwipeRefresh.setProgressViewOffset(true,mSwipeRefresh.getProgressViewStartOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set),mSwipeRefresh.getProgressViewEndOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set));
+        //  mSwipeRefresh.setProgressBackgroundColorSchemeResource(R.color.FocusYellowColor);
+        mSwipeRefresh.setRefreshing(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAppBarLayout.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAppBarLayout.removeOnOffsetChangedListener(this);
     }
 
     private void refreshData() {
@@ -155,4 +183,8 @@ public class SpaceTab extends Fragment {
         }
     };
 
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        mSwipeRefresh.setEnabled(i==0||mSwipeRefresh.isRefreshing());
+    }
 }

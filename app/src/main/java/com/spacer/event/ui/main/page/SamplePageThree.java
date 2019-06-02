@@ -11,6 +11,8 @@ import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,9 +42,13 @@ public class SamplePageThree extends SupportFragment {
         ButterKnife.bind(this,view);
         mRoot.setBackgroundResource(R.color.FlatOrange);
     }
-
+    int p = -1;
     @Override
     public int defaultPresentStyle() {
-        return PresentStyle.GLIDE;
+        if(p==-1) {
+            Random r = new Random();
+            p = r.nextInt(39) + 1; //exclude NONE present style
+        }
+        return p;
     }
 }

@@ -12,5 +12,6 @@
     <string name="middle_dot" translatable="false">•</string>
     <string name="events">Events</string>
     <string name="see_all_events">See all events</string>
+    <string name="search_hint">Spaces, Events or Services</string>
 
 </resources>

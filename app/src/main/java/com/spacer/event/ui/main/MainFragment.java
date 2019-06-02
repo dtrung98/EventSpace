@@ -119,4 +119,9 @@ public class MainFragment extends SupportFragment implements BottomNavigationVie
     public int defaultPresentStyle() {
         return PresentStyle.FADE;
     }
+
+    @Override
+    public boolean useOpenAsExitPresentStyle() {
+        return true;
+    }
 }

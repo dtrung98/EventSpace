@@ -29,6 +29,10 @@ public class SpaceAdapter extends RecyclerView.Adapter<SpaceAdapter.ItemHolder> 
     private boolean mAdminMode = false;
     private ArrayList<Space> mData = new ArrayList<>();
 
+    public List<Space> getData() {
+        return mData;
+    }
+
     public interface SpaceListener {
         void onItemClick(Space space);
     }
@@ -140,7 +144,8 @@ public class SpaceAdapter extends RecyclerView.Adapter<SpaceAdapter.ItemHolder> 
                     .load(space.getImages().get(0))
                     .into(mImage);
              mEventFlowLayout.removeAllViews();
-            if(mContext instanceof Activity) {
+
+             if(mContext instanceof Activity) {
                 LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
 
                 for (int i = 0; i < 4 &&i < space.getEventTypeNames().size(); i++) {

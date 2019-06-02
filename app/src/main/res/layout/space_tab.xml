@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/root"
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="0dp"
-    xmlns:tools="http://schemas.android.com/tools"
+    >
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#22000000">
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent">
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:titleEnabled="false">
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/filter_panel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
+                android:paddingTop="94dp"
                 android:visibility="gone"
                 tools:visibility="visible">
                 <TextView
@@ -142,10 +147,12 @@
                     android:layout_marginBottom="16dp"/>
             </android.support.constraint.ConstraintLayout>
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/search_parent"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 app:layout_collapseMode="pin"
-                android:background="#8823202B">
+                android:paddingTop="24dp"
+                android:background="#DD23202B">
             <View
                 android:id="@+id/search_panel"
                 android:layout_width="match_parent"
@@ -161,6 +168,8 @@
                 android:gravity="center_vertical"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+              android:layout_marginBottom="8dp"
                 android:background="@drawable/background_search_panel"/>
                 <ImageView
                     android:id="@+id/search_icon"
@@ -184,7 +193,8 @@
                     app:layout_constraintBottom_toBottomOf="@id/search_panel"
                     app:layout_constraintEnd_toEndOf="@id/search_panel"
                     app:layout_constraintStart_toEndOf="@id/search_icon"
-                    android:text="Spaces, Events or Services"
+                    android:text="@string/search_hint"
+                    android:textSize="14sp"
                     android:textColor="#EEE"
                     android:textStyle="bold"
                     android:gravity="center"/>
@@ -195,11 +205,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/space_recycle_view"
                 android:layout_width="match_parent"
@@ -209,7 +214,6 @@
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/bottom_navigation_parent_height"
                 />
-        </android.support.v4.widget.SwipeRefreshLayout>
         <TextView
             android:id="@+id/error"
             android:layout_width="wrap_content"
@@ -222,3 +226,4 @@
             />
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
