@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Event Space"
+            android:text="@string/event_space"
             app:fontFamily="@font/postnobillsjaffna_extrabold"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:gravity="center"
             android:layout_height="30dp"
-            android:text="Slogan demo"
+            android:text="@string/slogan"
             android:textSize="17sp"
             android:textColor="#FF7D00"/>
 
@@ -69,7 +69,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="17sp"
                     android:inputType="textEmailAddress"
-                    android:hint="email" />
+                    android:hint="@string/email" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -96,7 +96,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="17sp"
                     android:inputType="textPassword"
-                    android:hint="password"/>
+                    android:hint="@string/password"/>
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
@@ -137,7 +137,7 @@
                 android:layout_marginEnd="30dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="SIGN IN"
+                android:text="@string/sign_in_upcase"
                 android:textSize="17sp"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Or sign in with"
+                    android:text="@string/option_signin"
                     android:textAlignment="center"
                     android:textSize="14sp" />
 
@@ -205,7 +205,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginTop="8dp"
-                    android:text="Don't have an account?"
+                    android:text="@string/string_dont_have"
                     android:textSize="16sp"
                     android:textColor="#bbb"
                     android:gravity="end"
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginTop="8dp"
-                    android:text="Sign up"
+                    android:text="@string/sign_up"
                     android:textSize="16sp"
                     android:textColor="#D43732"
                     android:textStyle="bold" />

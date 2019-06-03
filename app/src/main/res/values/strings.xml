@@ -14,5 +14,19 @@
     <string name="events">Events</string>
     <string name="see_all_events">See all events</string>
     <string name="search_hint">Spaces, Events or Services</string>
+    <string name="sign_up">Sign up</string>
+    <string name="full_name">Full name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="retype_password">Retype password</string>
+    <string name="privacy">Khi đăng ký tôi đã xem xét và đồng ý với Điều khoản sử dụng và Chính sách bảo mật của Cinema Ticket.</string>
+    <string name="btn_create">CREATE ACCOUNT</string>
+    <string name="string_already">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="event_space">Event Space</string>
+    <string name="slogan">Slogan demo</string>
+    <string name="sign_in_upcase">SIGN IN</string>
+    <string name="option_signin">Or sign in with</string>
+    <string name="string_dont_have">Don\'t have an account?</string>
 
 </resources>
