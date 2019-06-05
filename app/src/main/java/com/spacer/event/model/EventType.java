@@ -1,5 +1,7 @@
 package com.spacer.event.model;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 
 public class EventType {
@@ -11,6 +13,16 @@ public class EventType {
     private ArrayList<String> services = new ArrayList<>();
     private ArrayList<Integer> prices = new ArrayList<>();
     private ArrayList<Integer> counts = new ArrayList<>();
+
+/*    public ArrayList<String> getServiceNames() {
+        return serviceNames;
+    }
+
+    public void setServiceNames(ArrayList<String> serviceNames) {
+        this.serviceNames = serviceNames;
+    }
+
+    public ArrayList<String> serviceNames = new ArrayList<>();*/
 
     public String getId() {
         return id;
@@ -74,5 +86,15 @@ public class EventType {
 
     public void setCounts(ArrayList<Integer> counts) {
         this.counts = counts;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj instanceof EventType) {
+            return this.staticName.equals(((EventType)obj).staticName);
+        } else if (obj instanceof String) {
+            return this.staticName.equals(obj);
+        }
+        return false;
     }
 }

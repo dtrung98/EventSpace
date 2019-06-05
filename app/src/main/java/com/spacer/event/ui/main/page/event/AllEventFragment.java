@@ -1,11 +1,9 @@
-package com.spacer.event.ui.main.page;
+package com.spacer.event.ui.main.page.event;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,16 +23,14 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.crypto.AEADBadTagException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EventListFragment extends SupportFragment{
+public class AllEventFragment extends SupportFragment implements EventAdapter.EventTypeListener {
 
-    public static EventListFragment newInstance(List<Space> spaces, List<EventType> eventTypes) {
-        EventListFragment fragment = new EventListFragment();
+    public static AllEventFragment newInstance(List<Space> spaces, List<EventType> eventTypes) {
+        AllEventFragment fragment = new AllEventFragment();
         if(spaces!=null) fragment.mSpaces.addAll(spaces);
         if(eventTypes!=null) fragment.mEventTypes.addAll(eventTypes);
         return fragment;
@@ -76,6 +72,7 @@ public class EventListFragment extends SupportFragment{
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
         mAdapter = new EventAdapter(getActivity());
+        mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
         mSwipeRefresh.setOnRefreshListener(this::refreshData);
@@ -103,22 +100,32 @@ public class EventListFragment extends SupportFragment{
     }
 
     @Override
-    public int defaultPresentStyle() {
-        return PresentStyle.SLIDE_UP;
+    public int defaultTransition() {
+        return PresentStyle.ROTATE_DOWN_LEFT;
+    }
+
+    @Override
+    public int defaultOpenExitTransition() {
+        return PresentStyle.SLIDE_LEFT;
     }
 
     @Override
     public void onSetStatusBarMargin(int value) {
-        ((ViewGroup.MarginLayoutParams)mBack.getLayoutParams()).topMargin = (int) (getResources().getDimension(R.dimen.dp_16) +value);
+        ((ViewGroup.MarginLayoutParams)mBack.getLayoutParams()).topMargin = (int) (getResources().getDimension(R.dimen.dp16) +value);
         ((ViewGroup.MarginLayoutParams)mTitle.getLayoutParams()).topMargin += value;
     }
 
-    private class CountingSpacesTask extends AsyncTask<Void,Void,Void> {
-        WeakReference<EventListFragment> mWFragment ;
-        public CountingSpacesTask(EventListFragment fragment) {
+    @Override
+    public void onEventItemClick(EventType eventType) {
+     getNavigationController().presentFragment(EventDetailFragment.newInstance(mSpaces,mEventTypes,eventType));
+    }
+
+    private static class CountingSpacesTask extends AsyncTask<Void,Void,Void> {
+        WeakReference<AllEventFragment> mWFragment ;
+        CountingSpacesTask(AllEventFragment fragment) {
             mWFragment = new WeakReference<>(fragment);
         }
-        public void cancel() {
+        void cancel() {
             cancel(true);
             if(mWFragment.get()!=null) mWFragment.get().mCountingSpacesTask = null;
             mWFragment.clear();

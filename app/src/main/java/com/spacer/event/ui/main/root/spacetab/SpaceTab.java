@@ -20,8 +20,10 @@ import com.spacer.event.listener.FireBaseCollectionListener;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Space;
 import com.spacer.event.ui.main.MainActivity;
-import com.spacer.event.ui.main.page.EventListFragment;
+import com.spacer.event.ui.main.page.event.AllEventFragment;
 import com.spacer.event.ui.main.page.SearchFragment;
+import com.spacer.event.ui.main.page.SpaceDetailFragment;
+import com.spacer.event.ui.main.page.event.EventDetailFragment;
 import com.spacer.event.util.Tool;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedListener {
+public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedListener, SpaceAdapter.SpaceListener, CircleEventTypeAdapter.EventTypeListener {
     private static final String TAG = "SpaceTab";
 
     @BindView(R.id.root) View mRoot;
@@ -61,7 +63,7 @@ public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedLi
     @OnClick(R.id.see_all_panel)
     void seeAllEvents() {
         if(getActivity() instanceof MainActivity)
-            ((MainActivity)getActivity()).presentFragment(EventListFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData()));
+            ((MainActivity)getActivity()).presentFragment(AllEventFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData()));
     }
 
     public static SpaceTab newInstance() {
@@ -95,10 +97,13 @@ public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedLi
         }
 
         mSpaceAdapter = new SpaceAdapter(getActivity());
+        mSpaceAdapter.setListener(this);
         mSpaceRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         mSpaceRecyclerView.setAdapter(mSpaceAdapter);
 
+
         mEventTypeAdapter = new CircleEventTypeAdapter(getActivity());
+        mEventTypeAdapter.setListener(this);
         mFilterRecyclerView.setAdapter(mEventTypeAdapter);
         mFilterRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
 
@@ -186,5 +191,18 @@ public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedLi
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
         mSwipeRefresh.setEnabled(i==0||mSwipeRefresh.isRefreshing());
+    }
+
+    @Override
+    public void onSpaceItemClick(Space space) {
+        if(getActivity() instanceof MainActivity) {
+            ((MainActivity)getActivity()).presentFragment(SpaceDetailFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData(),space));
+        }
+    }
+
+    @Override
+    public void onEventItemClick(EventType eventType) {
+        if(getActivity() instanceof MainActivity)
+        ((MainActivity)getActivity()).presentFragment(EventDetailFragment.newInstance(mSpaceAdapter.getData(),mEventTypeAdapter.getData(),eventType));
     }
 }

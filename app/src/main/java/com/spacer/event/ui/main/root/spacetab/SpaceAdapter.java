@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.nex3z.flowlayout.FlowLayout;
 import com.spacer.event.R;
 import com.spacer.event.model.Space;
@@ -34,7 +33,7 @@ public class SpaceAdapter extends RecyclerView.Adapter<SpaceAdapter.ItemHolder> 
     }
 
     public interface SpaceListener {
-        void onItemClick(Space space);
+        void onSpaceItemClick(Space space);
     }
     private SpaceListener mListener;
     public void setListener(SpaceListener listener) {
@@ -114,38 +113,26 @@ public class SpaceAdapter extends RecyclerView.Adapter<SpaceAdapter.ItemHolder> 
 
         @OnClick(R.id.touch_panel)
         void clickPanel() {
-            if(mListener!=null) mListener.onItemClick(mData.get(getAdapterPosition()));
+            if(mListener!=null) mListener.onSpaceItemClick(mData.get(getAdapterPosition()));
             else if(mContext instanceof MainActivity) {
                 //((MainActivity) mContext).presentFragment(SpaceDetail.newInstance(
-                 //       mData.get(getAdapterPosition()), mData.get(getAdapterPosition()).getName()));
+                //       mData.get(getAdapterPosition()), mData.get(getAdapterPosition()).getName()));
             }
         }
 
         public void bind(Space space) {
-
-
-
-
             String Address = space.getAddress();
 
-//            if (Address.length() >= 78) // Nhieu hon 78 ky tu thi nhung ky tu sau phai ghi bang ...
-//            {
-//                Address = Address.substring(0, Math.min(Address.length(), 78));
-//                Address += "...";
-//            }
-
             mTitle.setText(space.getName());
-            //  mDetail.setText(space.getSupportEvents().size()+" "+mDetail.getContext().getString(R.string.events)+"\n" + mDetail.getContext().getString(R.string.middle_dot) +"\n"+space.getDetail());
-           // mDetail.setText(space.getSupportEvents().size()+" "+mDetail.getContext().getString(R.string.events));
-              mDetail.setText(space.getSupportEvents().size()+" "+mDetail.getContext().getString(R.string.events)+" " + mDetail.getContext().getString(R.string.middle_dot) +" "+space.getAddress());
+            mDetail.setText(space.getSupportEvents().size()+" "+mDetail.getContext().getString(R.string.events)+" " + mDetail.getContext().getString(R.string.middle_dot) +" "+space.getAddress());
 
             if(!space.getImages().isEmpty())
-            Glide.with(mContext)
-                    .load(space.getImages().get(0))
-                    .into(mImage);
-             mEventFlowLayout.removeAllViews();
+                Glide.with(mContext)
+                        .load(space.getImages().get(0))
+                        .into(mImage);
+            mEventFlowLayout.removeAllViews();
 
-             if(mContext instanceof Activity) {
+            if(mContext instanceof Activity) {
                 LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
 
                 for (int i = 0; i < 4 &&i < space.getEventTypeNames().size(); i++) {

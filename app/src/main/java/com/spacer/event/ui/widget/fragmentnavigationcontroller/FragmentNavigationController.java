@@ -101,7 +101,13 @@ public class FragmentNavigationController extends SupportFragment {
             } else {
 
                 fragment.setNavigationController(this);
-                getTopFragment().setExitPresentStyle(fragment.getPresentStyle());
+
+                int openExit = fragment.defaultOpenExitTransition();
+                if(openExit==PresentStyle.SAME_AS_OPEN)
+                getTopFragment().setOpenExitPresentStyle(fragment.getPresentStyle());
+                else if(openExit!=PresentStyle.REMOVED_FRAGMENT_PRESENT_STYLE)
+                    getTopFragment().setOpenExitPresentStyle(PresentStyle.get(openExit));
+
                 fragment.setAnimatable(withAnimation);
                 // hide last fragment and add new fragment
                 SupportFragment hideFragment = fragmentStack.peek();
