@@ -21,7 +21,7 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:background="@drawable/com_facebook_tooltip_blue_topnub" />
+                android:background="@drawable/ic_launcher" />
 
             <TextView
                 android:layout_width="wrap_content"

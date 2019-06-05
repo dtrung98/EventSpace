@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/black">
+    android:background="@color/DarkerBlack">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:background="@android:color/transparent"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_arrow_back_24dp" />
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             app:fontFamily="@font/postnobillsjaffna_extrabold"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#FF3300"/>
+            android:textColor="@color/FocusYellowColor"/>
         <TextView
             android:layout_width="match_parent"
             android:gravity="center"

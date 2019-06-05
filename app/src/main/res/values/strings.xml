@@ -28,5 +28,20 @@
     <string name="sign_in_upcase">SIGN IN</string>
     <string name="option_signin">Or sign in with</string>
     <string name="string_dont_have">Don\'t have an account?</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="btn_send">Send</string>
+    <string name="sign_in_or_sign_up_to_do_more_work">Sign in or sign up to do more work</string>
+    <string name="btn_sign_out">Sign out</string>
+    <string name="user_fullname">Full name</string>
+    <string name="user_birthday">Birthday</string>
+    <string name="user_format_birthday">dd/mm/yyyy</string>
+    <string name="user_gender">Gender</string>
+    <string name="user_gender_male">Male</string>
+    <string name="user_gender_female">Female</string>
+    <string name="user_gender_other">Other</string>
+    <string name="user_phonenumber">Phone number</string>
+    <string name="user_address">Address</string>
+    <string name="btn_save">Save</string>
+    <string name="user_balance">Balance</string>
 
 </resources>

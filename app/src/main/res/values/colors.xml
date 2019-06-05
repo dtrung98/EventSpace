@@ -31,5 +31,6 @@
     <color name="bottom_navigation_color">#DD23202B</color>
     <color name="FocusYellowColor">#D97F68</color>
     <color name="DarkUnfocusColor">#6E6C6B</color>
+    <color name="quite_green">#559E74</color>
 
 </resources>
