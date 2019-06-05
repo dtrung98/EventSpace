@@ -44,7 +44,7 @@ public class SamplePageThree extends SupportFragment {
     }
     int p = -1;
     @Override
-    public int defaultPresentStyle() {
+    public int defaultTransition() {
         if(p==-1) {
             Random r = new Random();
             p = r.nextInt(39) + 1; //exclude NONE present style

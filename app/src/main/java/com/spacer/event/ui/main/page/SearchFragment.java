@@ -64,13 +64,13 @@ public class SearchFragment extends SupportFragment implements SearchView.OnQuer
     }
 
     @Override
-    public int defaultPresentStyle() {
+    public int defaultTransition() {
         return PresentStyle.FADE;
     }
 
     @Override
-    public boolean useOpenAsExitPresentStyle() {
-        return false;
+    public int defaultOpenExitTransition() {
+        return PresentStyle.REMOVED_FRAGMENT_PRESENT_STYLE;
     }
 
     @Override

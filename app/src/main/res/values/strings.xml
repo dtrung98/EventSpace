@@ -43,5 +43,11 @@
     <string name="user_address">Address</string>
     <string name="btn_save">Save</string>
     <string name="user_balance">Balance</string>
+    <string name="about">About</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
+    <string name="images">Images</string>
+    <string name="detail">Detail</string>
+    <string name="services">Services</string>
 
 </resources>

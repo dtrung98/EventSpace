@@ -6,6 +6,11 @@
             <corners android:radius="16dp"/>
             <solid android:color="#44ff9500"/>
         </shape>
-        <color android:color="@android:color/white"/>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp"/>
+            <solid android:color="#1F1C26"/>
+        </shape>
     </item>
 </ripple>

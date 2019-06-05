@@ -32,8 +32,14 @@ public abstract class SupportFragment extends Fragment {
     private PresentStyle presentStyle = null;
     private PresentStyle exitPresentStyle = null;
 
-    public boolean useOpenAsExitPresentStyle() {
-        return false;
+    /**
+     *  Cài đặt hiệu ứng cho Fragment cũ
+     * @return  0 : không dùng hiệu ứng
+     * <br>  -1 : dùng cùng loại hiệu ứng với Fragment mới
+     * <br> -2 : dùng hiệu ứng biến mất của Fragment cũ
+     */
+    public int defaultOpenExitTransition() {
+        return PresentStyle.SAME_AS_OPEN;
     }
 
     public boolean isWhiteTheme(boolean current) {
@@ -42,7 +48,7 @@ public abstract class SupportFragment extends Fragment {
     }
 
     public final PresentStyle getPresentStyle() {
-        if(presentStyle==null) presentStyle = PresentStyle.get(defaultPresentStyle());
+        if(presentStyle==null) presentStyle = PresentStyle.get(defaultTransition());
         return presentStyle;
     }
 
@@ -87,11 +93,11 @@ public abstract class SupportFragment extends Fragment {
         this.presentStyle = presentStyle;
     }*/
 
-    public int defaultPresentStyle() {
+    public int defaultTransition() {
         return PRESENT_STYLE_DEFAULT;
     }
 
-    public void setExitPresentStyle(PresentStyle exitPresentStyle) {
+    public void setOpenExitPresentStyle(PresentStyle exitPresentStyle) {
         this.exitPresentStyle = exitPresentStyle;
     }
 
@@ -119,7 +125,7 @@ public abstract class SupportFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presentStyle = PresentStyle.get(defaultPresentStyle());
+        presentStyle = PresentStyle.get(defaultTransition());
         onSetStatusBarMargin(getStatusHeight(getResources()));
     }
 
@@ -183,9 +189,11 @@ public abstract class SupportFragment extends Fragment {
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             } else {
                 int id;
-                if(useOpenAsExitPresentStyle()||exitPresentStyle==null)
+                if(exitPresentStyle==null)
                     id = presentStyle.getOpenExitAnimatorId();
-                else id = exitPresentStyle.getOpenExitAnimatorId();
+                else {
+                    id = exitPresentStyle.getOpenExitAnimatorId();
+                }
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             }
 
@@ -193,9 +201,13 @@ public abstract class SupportFragment extends Fragment {
 
             if (enter) {
                 int id;
-                if(useOpenAsExitPresentStyle()||exitPresentStyle == null)
+                if(exitPresentStyle == null)
                 id = presentStyle.getCloseEnterAnimatorId();
-                else id = exitPresentStyle.getCloseEnterAnimatorId();
+                else {
+                    id = exitPresentStyle.getCloseEnterAnimatorId();
+                    exitPresentStyle = null;
+                }
+
                 if(id != -1) animator = AnimatorInflater.loadAnimator(getActivity(), id);
             } else {
                 int id;

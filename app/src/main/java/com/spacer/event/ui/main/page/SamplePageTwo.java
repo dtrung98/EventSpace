@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SamplePageTwo extends SupportFragment {
-    private static final String TAG = "SamplePage";
+    private static final String TAG = "SamplePageTwo";
 
     @OnClick(R.id.back)
     void back() {
@@ -30,6 +30,12 @@ public class SamplePageTwo extends SupportFragment {
     }
 
     @BindView(R.id.root) View mRoot;
+
+    public static SamplePageTwo newInstance(int value) {
+        SamplePageTwo fragment = new SamplePageTwo();
+        fragment.p = value;
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -46,11 +52,11 @@ public class SamplePageTwo extends SupportFragment {
 
     int p = -1;
     @Override
-    public int defaultPresentStyle() {
+    public int defaultTransition() {
         if(p==-1) {
             Random r = new Random();
             p = r.nextInt(39) + 1; //exclude NONE present style
         }
-        return PresentStyle.GLIDE;
+        return p;
     }
 }

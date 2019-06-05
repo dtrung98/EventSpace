@@ -32,7 +32,7 @@ public class CircleEventTypeAdapter extends RecyclerView.Adapter<CircleEventType
     }
 
     public interface EventTypeListener {
-        void onItemClick(EventType eventType);
+        void onEventItemClick(EventType eventType);
     }
     private EventTypeListener mListener;
     public void setListener(EventTypeListener listener) {
@@ -103,7 +103,7 @@ public class CircleEventTypeAdapter extends RecyclerView.Adapter<CircleEventType
 
         @OnClick({R.id.image,R.id.root})
         void clickPanel() {
-            if(mListener!=null) mListener.onItemClick(mData.get(getAdapterPosition()));
+            if(mListener!=null) mListener.onEventItemClick(mData.get(getAdapterPosition()));
             else if(mContext instanceof MainActivity) {
                 //((MainActivity) mContext).presentFragment(SpaceDetail.newInstance(
                  //       mData.get(getAdapterPosition()), mData.get(getAdapterPosition()).getName()));

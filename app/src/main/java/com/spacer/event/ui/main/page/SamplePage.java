@@ -6,12 +6,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
 import java.util.Random;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -24,8 +26,17 @@ public class SamplePage extends SupportFragment {
     }
     @OnClick(R.id.button)
     void goToSomeWhere() {
-        getMainActivity().presentFragment(new SamplePageTwo());
+        String text = mEditText.getText().toString();
+        int value = -1; try {
+        value =Integer.parseInt(text);
+        getMainActivity().presentFragment(SamplePageTwo.newInstance(value));
+        } catch (Exception e) {
+            getMainActivity().presentFragment(new SamplePageTwo());
+        }
     }
+
+    @BindView(R.id.edit_text)
+    EditText mEditText;
 
     @Nullable
     @Override
@@ -41,7 +52,7 @@ public class SamplePage extends SupportFragment {
 
     int p = -1;
     @Override
-    public int defaultPresentStyle() {
+    public int defaultTransition() {
         if(p==-1) {
             Random r = new Random();
             p = r.nextInt(39) + 1; //exclude NONE present style
