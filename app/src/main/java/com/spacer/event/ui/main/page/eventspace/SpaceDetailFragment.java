@@ -1,12 +1,14 @@
-package com.spacer.event.ui.main.page.event;
+package com.spacer.event.ui.main.page.eventspace;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.motion.MotionLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,6 @@ import com.spacer.event.R;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Service;
 import com.spacer.event.model.Space;
-import com.spacer.event.ui.main.page.SpaceDetailFragment;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
@@ -30,14 +31,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EventDetailFragment extends SupportFragment implements SpaceInEventAdapter.SpaceListener {
-    private static final String TAG = "EventDetailFragment";
+public class SpaceDetailFragment extends SupportFragment {
+    private static final String TAG = "SpaceDetailFragment";
 
-    public static EventDetailFragment newInstance(List<Space> spaces, List<EventType> eventTypes, EventType event) {
-        EventDetailFragment fragment = new EventDetailFragment();
+
+    public static SpaceDetailFragment newInstance(List<Space> spaces, List<EventType> eventTypes, Space space) {
+        SpaceDetailFragment fragment = new SpaceDetailFragment();
         if(spaces!=null) fragment.mSpaces.addAll(spaces);
         if(eventTypes!=null) fragment.mEventTypes.addAll(eventTypes);
-        if(event!=null) fragment.mEventType = event;
+        if(space!=null) fragment.mSpace = space;
         return fragment;
     }
 
@@ -53,8 +55,8 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
     @BindView(R.id.title)
     TextView mTitle;
 
-    @BindView(R.id.icon)
-    ImageView mIcon;
+    @BindView(R.id.image)
+    ImageView mImage;
 
     @BindView(R.id.status_bar) View mStatusBar;
 
@@ -62,12 +64,15 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
     ArrayList<EventType> mEventTypes = new ArrayList<>();
     ArrayList<Service> mServices = new ArrayList<>();
 
-    EventType mEventType;
+    Space mSpace;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
-    SpaceInEventAdapter mAdapter;
+    EventAdapter mAdapter;
+
+    @BindView(R.id.root)
+    MotionLayout mMotionLayout;
 
     @Override
     public void onResume() {
@@ -90,9 +95,9 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        mIcon.setVisibility(View.VISIBLE);
-        mAdapter = new SpaceInEventAdapter(getActivity());
-        mAdapter.setListener(this);
+        mImage.setVisibility(View.VISIBLE);
+
+        mAdapter = new EventAdapter(getActivity());
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(),mAdapter.getSpanCount());
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -100,6 +105,7 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
                 return mAdapter.getSpanSizeItem(i);
             }
         });
+
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mSwipeRefresh.setEnabled(false);
@@ -113,26 +119,27 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
 
     @Override
     public void onDestroyView() {
-        if(mLoadSpacesTask !=null) mLoadSpacesTask.cancel();
+        if(mSpacesTask !=null) mSpacesTask.cancel();
         super.onDestroyView();
     }
 
-    private LoadSpacesTask mLoadSpacesTask;
+    private CountingSpacesTask mSpacesTask;
 
     private void refreshData() {
-        if(mEventType!=null) {
+        if(mSpace!=null) {
 
-            mTitle.setText(mEventType.getName());
-            mAdapter.setEventType(mEventType,false);
+            mTitle.setText(mSpace.getName());
+            mAdapter.setSpace(mSpace,false);
 
-           if(!mEventType.getIcon().isEmpty())
+            if(!mSpace.getImages().isEmpty())
                 Glide.with(this)
-                        .load(mEventType.getIcon())
-                        .into(mIcon);
+                        .load(mSpace.getImages().get(0))
+                        .into(mImage);
 
-            if (mLoadSpacesTask != null) mLoadSpacesTask.cancel();
-            mLoadSpacesTask = new LoadSpacesTask(this);
-            mLoadSpacesTask.execute();
+
+            if (mSpacesTask != null) mSpacesTask.cancel();
+            mSpacesTask = new CountingSpacesTask(this);
+            mSpacesTask.execute();
 
         } else mSwipeRefresh.setRefreshing(false);
     }
@@ -152,26 +159,26 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
         mStatusBar.getLayoutParams().height = value;
     }
 
+    public void reportCountResult(ArrayList<Integer> counts,boolean done) {
+        mAdapter.setCountData(counts,done);
+        if(done)
+            mSwipeRefresh.setRefreshing(false);
+    }
 
-    public void reportResult(ArrayList<Space> data, boolean done) {
+    public void reportEventResult(ArrayList<EventType> data, boolean done) {
         mAdapter.setData(data, done);
         if(done)
             mSwipeRefresh.setRefreshing(false);
     }
 
-    @Override
-    public void onSpaceItemClick(Space space) {
-        getNavigationController().presentFragment(SpaceDetailFragment.newInstance(mSpaces,mEventTypes,space));
-    }
-
-    private static class LoadSpacesTask extends AsyncTask<Void,Void,Void> {
-        WeakReference<EventDetailFragment> mWFragment ;
-        public LoadSpacesTask(EventDetailFragment fragment) {
+    private static class CountingSpacesTask extends AsyncTask<Void,Void,Void> {
+        WeakReference<SpaceDetailFragment> mWFragment ;
+        public CountingSpacesTask(SpaceDetailFragment fragment) {
             mWFragment = new WeakReference<>(fragment);
         }
         public void cancel() {
             cancel(true);
-            if(mWFragment.get()!=null) mWFragment.get().mLoadSpacesTask = null;
+            if(mWFragment.get()!=null) mWFragment.get().mSpacesTask = null;
             mWFragment.clear();
             mWFragment = null;
         }
@@ -180,26 +187,56 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
         protected Void doInBackground(Void... voids) {
 
             if (mWFragment.get() != null) {
-                ArrayList<Space> allSpaces = mWFragment.get().mSpaces;
-                EventType eventType = mWFragment.get().mEventType;
+                ArrayList<EventType> allEvents = mWFragment.get().mEventTypes;
+                Space space = mWFragment.get().mSpace;
 
-                if(eventType!=null&&allSpaces!=null) {
+                if(space!=null&&allEvents!=null) {
 
-                    ArrayList<Space> spaceHasThatEvent = new ArrayList<>();
-                    String staticName = eventType.getStaticName();
+                    ArrayList<EventType> eventsOfSpace = new ArrayList<>();
+                    ArrayList<String> staticNames = space.getSupportEvents();
+                    int size = space.getSupportEvents().size();
+                    for (int i = 0; i < size; i++) {
+                        String staticName = staticNames.get(i);
 
-                    int allSpaceSize = allSpaces.size();
-                    for (int i = 0; i < allSpaceSize; i++) {
-                        int pos = allSpaces.get(i).getSupportEvents().indexOf(staticName);
-                        if(pos!=-1)
-                            spaceHasThatEvent.add(allSpaces.get(i));
+                        for (EventType event :
+                                allEvents) {
+                            if (event != null && event.equals(staticName)) {
+                                eventsOfSpace.add(event);
+                                break;
+                            } else
+                                Log.d(TAG, "doInBackground: "+event+" vs "+ staticName);
+                        }
+
                     }
 
                     if (mWFragment.get() != null) {
-                        mWFragment.get().mSwipeRefresh.post(() -> mWFragment.get().reportResult(spaceHasThatEvent, true));
+                        mWFragment.get().mSwipeRefresh.post(() -> mWFragment.get().reportEventResult(eventsOfSpace, true));
                     }
                 }
             }
+            if(true) return null;
+            ArrayList<Integer> counts = new ArrayList<>();
+
+            if(mWFragment.get()!=null) {
+                ArrayList<Space> spaces = mWFragment.get().mSpaces;
+                ArrayList<EventType> eventTypes = mWFragment.get().mEventTypes;
+
+
+                int size = eventTypes.size();
+                for (int i = 0; i <size; i++) {
+                    EventType eventType = eventTypes.get(i);
+                    int count = 0;
+                    for (Space space : spaces) {
+                        if(space.getSupportEvents().contains(eventType.getStaticName())) count ++;
+                    }
+                    counts.add(count);
+                }
+            }
+
+            if(mWFragment.get()!=null) {
+                mWFragment.get().mSwipeRefresh.post(() -> mWFragment.get().reportCountResult(counts,true));
+            }
+
             return null;
         }
     }

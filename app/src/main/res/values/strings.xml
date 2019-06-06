@@ -49,5 +49,7 @@
     <string name="images">Images</string>
     <string name="detail">Detail</string>
     <string name="services">Services</string>
+    <string name="event">Event</string>
+    <string name="service">Service</string>
 
 </resources>

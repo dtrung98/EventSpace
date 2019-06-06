@@ -1,4 +1,4 @@
-package com.spacer.event.ui.main.page.event;
+package com.spacer.event.ui.main.page.eventspace;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

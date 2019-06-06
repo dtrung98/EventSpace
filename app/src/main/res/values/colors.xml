@@ -32,5 +32,6 @@
     <color name="FocusYellowColor">#D97F68</color>
     <color name="DarkUnfocusColor">#6E6C6B</color>
     <color name="quite_green">#559E74</color>
+    <color name="event_background_color">#FAF3DD</color>
 
 </resources>

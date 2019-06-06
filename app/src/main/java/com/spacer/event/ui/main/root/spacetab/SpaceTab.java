@@ -20,10 +20,10 @@ import com.spacer.event.listener.FireBaseCollectionListener;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Space;
 import com.spacer.event.ui.main.MainActivity;
-import com.spacer.event.ui.main.page.event.AllEventFragment;
-import com.spacer.event.ui.main.page.SearchFragment;
-import com.spacer.event.ui.main.page.SpaceDetailFragment;
-import com.spacer.event.ui.main.page.event.EventDetailFragment;
+import com.spacer.event.ui.main.page.eventspace.AllEventFragment;
+import com.spacer.event.ui.main.page.search.SearchFragment;
+import com.spacer.event.ui.main.page.eventspace.SpaceDetailFragment;
+import com.spacer.event.ui.main.page.eventspace.EventDetailFragment;
 import com.spacer.event.util.Tool;
 
 import java.util.ArrayList;

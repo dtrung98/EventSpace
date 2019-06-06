@@ -10,7 +10,7 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="60dp"/>
-            <solid android:color="#FAF3DD" />
+            <solid android:color="@color/event_background_color" />
             <stroke
                 android:width="2dp"
                 android:color="@color/FocusYellowColor"/>
