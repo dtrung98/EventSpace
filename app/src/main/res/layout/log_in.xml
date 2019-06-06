@@ -13,9 +13,8 @@
         <requestFocus/>
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="50dp"
             android:background="@android:color/transparent"
             android:layout_gravity="center"
             android:scaleType="centerInside"
@@ -26,17 +25,18 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/event_space"
-            app:fontFamily="@font/postnobillsjaffna_extrabold"
-            android:textSize="22sp"
+            android:fontFamily="@font/helvetica_font"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="@color/FocusYellowColor"/>
+            android:textColor="@color/FlatRed"/>
         <TextView
             android:layout_width="match_parent"
             android:gravity="center"
             android:layout_height="30dp"
             android:text="@string/slogan"
-            android:textSize="17sp"
-            android:textColor="#FF7D00"/>
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/FocusYellowColor"/>
 
         <LinearLayout
             android:layout_marginTop="20dp"
@@ -121,9 +121,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:layout_weight="1"
-                    android:gravity="fill_vertical"
+                    android:gravity="fill_vertical|end"
                     android:text="Forgot password?"
-                    android:textAlignment="textEnd"
                     android:textColor="#D43732"
                     android:textSize="14sp"
                     android:textStyle="bold" />
