@@ -51,5 +51,12 @@
     <string name="services">Services</string>
     <string name="event">Event</string>
     <string name="service">Service</string>
+    <string name="email_empty">Email cannot be blank</string>
+    <string name="email_invalid">Invalid Email</string>
+    <string name="password_empty">Password cannot be blank</string>
+    <string name="password_length">"Password must be at least 6 characters long"</string>
+    <string name="retype_empty">Retype password cannot be blank</string>
+    <string name="retype_match">Retype and password do not match</string>
+
 
 </resources>

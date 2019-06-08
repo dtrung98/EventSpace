@@ -25,4 +25,10 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="DialogDimDisabled" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.65</item>
+    </style>
 </resources>

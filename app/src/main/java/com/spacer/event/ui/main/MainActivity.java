@@ -13,8 +13,11 @@ import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.FragmentNavigationController;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
+import com.spacer.event.util.SignInOutStatusChanged;
 import com.spacer.event.util.Tool;
 
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
@@ -24,6 +27,31 @@ public class MainActivity extends AppCompatActivity   {
     FragmentNavigationController mNavigationController;
     FirebaseAuth mAuth;
     public FirebaseUser user;
+
+    public void justSignIn(FirebaseUser user) {
+        for (SignInOutStatusChanged listener :
+                mSignInOutListeners) {
+            listener.onJustSignIn(user);
+        }
+    }
+
+    public void justSignOut() {
+        for (SignInOutStatusChanged listener :
+                mSignInOutListeners) {
+            listener.onJustSignOut();
+        }
+    }
+
+    private ArrayList<SignInOutStatusChanged> mSignInOutListeners = new ArrayList<>();
+
+    public void addSignInOutStatusListener(SignInOutStatusChanged listener) {
+        mSignInOutListeners.add(listener);
+    }
+
+    public void removeSignInOutListener(SignInOutStatusChanged listener) {
+        mSignInOutListeners.remove(listener);
+    }
+
 
     @Override
     public void onBackPressed() {

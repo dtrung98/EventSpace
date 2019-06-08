@@ -101,5 +101,8 @@ dependencies {
 
     // Flow Layout
     implementation 'com.nex3z:flow-layout:1.2.4'
+
+    // Grender Toasty
+    implementation 'com.github.GrenderG:Toasty:1.4.2'
 }
 apply plugin: 'com.google.gms.google-services'

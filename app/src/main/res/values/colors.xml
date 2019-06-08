@@ -37,5 +37,6 @@
     <color name="FocusColorTwo">#DA7878</color>
     <color name="FocusGreen">#50C89E</color>
     <color name="FocusBlue">#4facfe</color>
+    <color name="success_stroke_color">#A5DC86</color>
 
 </resources>
