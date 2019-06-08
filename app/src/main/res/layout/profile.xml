@@ -92,6 +92,7 @@
         android:background="@drawable/btn_signin"
         android:text="@string/btn_sign_out"
         android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/next_profile_detail" />
 </android.support.constraint.ConstraintLayout>

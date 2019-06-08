@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 public class MainFragment extends SupportFragment implements BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
-    private static final String TAG = "MainFragment";
 
     @BindView(R.id.view_pager)
     ViewPager mBottomPager;

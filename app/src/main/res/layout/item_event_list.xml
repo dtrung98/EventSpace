@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="16dp"
-    app:cardBackgroundColor="#1F1C26"
+    app:cardBackgroundColor="@color/item_event_list_color"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="6dp"

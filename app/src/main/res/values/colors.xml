@@ -33,5 +33,9 @@
     <color name="DarkUnfocusColor">#6E6C6B</color>
     <color name="quite_green">#559E74</color>
     <color name="event_background_color">#FAF3DD</color>
+    <color name="item_event_list_color">#1F1C26</color>
+    <color name="FocusColorTwo">#DA7878</color>
+    <color name="FocusGreen">#50C89E</color>
+    <color name="FocusBlue">#4facfe</color>
 
 </resources>

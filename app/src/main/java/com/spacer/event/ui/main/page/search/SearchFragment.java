@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.spacer.event.R;
 import com.spacer.event.listener.FireBaseCollectionListener;
@@ -22,8 +23,10 @@ import com.spacer.event.ui.main.page.eventspace.SpaceDetailFragment;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,6 +82,8 @@ public class SearchFragment extends SupportFragment implements SearchView.OnQuer
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         mSearchView.setOnQueryTextListener(this);
+        mSwipeRefresh.setColorSchemeResources(R.color.FlatOrange);
+        mSwipeRefresh.setProgressViewOffset(true,mSwipeRefresh.getProgressViewStartOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set),mSwipeRefresh.getProgressViewEndOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set));
         mSwipeRefresh.setOnRefreshListener(this::refreshData);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
@@ -86,19 +91,87 @@ public class SearchFragment extends SupportFragment implements SearchView.OnQuer
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        updateUI();
+        updateUI(null);
     }
-    public void updateUI() {
-        ArrayList<Object> objects = new ArrayList<>();
-        objects.addAll(mEventTypes);
-        objects.addAll(mSpaces);
-        objects.addAll(mServices);
-        mAdapter.setData(objects);
+    public void updateUI(String query) {
+        if(query==null||query.isEmpty()) {
+            ArrayList<Object> objects = new ArrayList<>();
+            objects.addAll(mEventTypes);
+            objects.addAll(mSpaces);
+            objects.addAll(mServices);
+            mAdapter.setData(objects);
+        } else {
+            mAdapter.setData(filter(query));
+        }
+    }
+    private List<Object> filter(String query) {
+        final String lowerQuery = deAccent(query);
+        final List<Object> list = new ArrayList<>();
+
+        // Event Name
+        for(EventType event : mEventTypes) {
+            if(deAccent(event.getName()).contains(lowerQuery))
+                list.add(event);
+        }
+
+        // Space Name
+        for (Space space :
+                mSpaces) {
+            if (deAccent(space.getName()).contains(lowerQuery))
+                list.add(space);
+        }
+
+        // Service Name
+        for (Service service : mServices) {
+            if(deAccent(service.getName()).contains(lowerQuery))
+                list.add(service);
+        }
+
+        // Event Static Name
+        for(EventType event : mEventTypes) {
+            if(!list.contains(event)&&deAccent(event.getStaticName()).contains(lowerQuery))
+                list.add(event);
+        }
+
+        // Space Address or Phone
+        for (Space space :
+                mSpaces) {
+            if(!list.contains(space))
+            if (deAccent(space.getAddress()).contains(lowerQuery)
+                    || deAccent(space.getPhone()).contains(lowerQuery))
+                list.add(space);
+        }
+
+        // Service Static Name
+        for (Service service : mServices) {
+            if(!list.contains(service))
+            if(deAccent(service.getStaticName()).contains(lowerQuery))
+                list.add(service);
+        }
+
+
+        return list;
+    }
+
+    private static String deAccent(String str) {
+        String nfdNormalize = Normalizer.normalize(str,Normalizer.Form.NFD).toLowerCase();
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalize).replaceAll("");
     }
 
     public void refreshData() {
-        updateUI();
-        mSwipeRefresh.setRefreshing(false);
+
+        FirebaseFirestore.getInstance()
+                .collection("event_types")
+                .get()
+                .addOnSuccessListener(mEventListener)
+                .addOnFailureListener(mEventListener);
+
+        FirebaseFirestore.getInstance()
+                .collection("spaces")
+                .get()
+                .addOnSuccessListener(mSpaceListener)
+                .addOnFailureListener(mSpaceListener);
     }
 
     @Override
@@ -137,29 +210,43 @@ public class SearchFragment extends SupportFragment implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String s) {
+        updateUI(s);
         return true;
+    }
+
+    public int mCheckResult = 0;
+    private void checkResult() {
+        mCheckResult++;
+        if(mCheckResult > 1) {
+            mCheckResult = 0;
+            mSwipeRefresh.setRefreshing(false);
+        }
     }
 
     private FireBaseCollectionListener mEventListener = new FireBaseCollectionListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
-
+            checkResult();
         }
 
         @Override
         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
+            checkResult();
+            mEventTypes = (ArrayList<EventType>) queryDocumentSnapshots.toObjects(EventType.class);
+            updateUI(mSearchView.getQuery().toString());
         }
     };
     private FireBaseCollectionListener mSpaceListener = new FireBaseCollectionListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
-
+            checkResult();
         }
 
         @Override
         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
+            checkResult();
+            mSpaces = (ArrayList<Space>)queryDocumentSnapshots.toObjects(Space.class);
+            updateUI(mSearchView.getQuery().toString());
         }
     };
 

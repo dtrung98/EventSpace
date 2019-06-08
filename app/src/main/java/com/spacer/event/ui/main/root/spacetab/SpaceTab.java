@@ -129,16 +129,18 @@ public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedLi
 
     private void refreshData() {
         FirebaseFirestore.getInstance()
+                .collection("event_types")
+                .get()
+                .addOnSuccessListener(mEventTypeListener)
+                .addOnFailureListener(mEventTypeListener);
+
+        FirebaseFirestore.getInstance()
                 .collection("spaces")
                 .get()
                 .addOnSuccessListener(mSpaceListener)
                 .addOnFailureListener(mSpaceListener);
 
-        FirebaseFirestore.getInstance()
-                .collection("event_types")
-                .get()
-                .addOnSuccessListener(mEventTypeListener)
-                .addOnFailureListener(mEventTypeListener);
+
     }
 
     private FireBaseCollectionListener mSpaceListener = new FireBaseCollectionListener() {
