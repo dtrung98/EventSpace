@@ -160,7 +160,13 @@ public class SignInFragment extends SupportFragment {
 
     @OnClick(R.id.btn_facebook)
     void signInWithFaceBook() {
+        // lúc nhấn nút facebôk thì nó vô đây nè
+        // ông cứ làm giống như hồi đồ án ý
 
+        showLoading(); // nó sẽ show ra cái loading xoay tròm
+        // khi pit ket qua r thi
+        successDismissLoading(null);
+        // hình như kết quả nó trả về ở onActivityResult đúng hong
     }
     LoadingScreenDialog mLoadingDialog = null;
 
@@ -173,6 +179,12 @@ public class SignInFragment extends SupportFragment {
     private void successDismissLoading(FirebaseUser user) {
         Log.d(TAG, "successDismissLoading: current " + FirebaseAuth.getInstance().getCurrentUser());
         Log.d(TAG, "successDismissLoading: parameter "+user);
+
+        // cái lúc này là lúc mà kết quả trả về thành công á
+
+        // phần dưới này là giống nhau giữa 2 cái sign in và signup
+        // bỏ cái loading đi
+        // chở 1250 s thì đóng fragment này lại, và thông báo cho activity là đã đăng nhập
         mLoadingDialog.showSuccessThenDismiss("Hi there, welcome back!");
         btnSignIn.postDelayed(() -> {
 
@@ -202,10 +214,13 @@ public class SignInFragment extends SupportFragment {
         PreferenceUtil.getInstance().setSavedAccount(email);
 
         if(validateAccount(email,password)) {
-            showLoading();
+            // đây nè
+            // lúc ngta nhấn nút
+            // và form hợp lẹ
+            showLoading(); // cái này show ra 1 cái loading (nó che màn hinh đi)
             FirebaseAuth.getInstance()
                     .signInWithEmailAndPassword(email,password)
-                    .addOnSuccessListener(mSignInWithFormListener)
+                    .addOnSuccessListener(mSignInWithFormListener) // cái listener
                     .addOnFailureListener(mSignInWithFormListener);
         }
 
@@ -232,4 +247,6 @@ public class SignInFragment extends SupportFragment {
             failureDismissLoading(e.getMessage().toString());
         }
     };
+
+    // vi du cai signup cx tuong tu cai sign in nay
 }

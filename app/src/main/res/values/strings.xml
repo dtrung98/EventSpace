@@ -57,6 +57,7 @@
     <string name="password_length">"Password must be at least 6 characters long"</string>
     <string name="retype_empty">Retype password cannot be blank</string>
     <string name="retype_match">Retype and password do not match</string>
+    <string name="name_empty">Name can not be blank</string>
 
 
 </resources>
