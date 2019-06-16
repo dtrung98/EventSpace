@@ -135,9 +135,10 @@ public class SignInFragment extends SupportFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
-
         autoFilled();
     }
+
+
     private void autoFilled() {
         if(PreferenceUtil.getInstance().isRememberAccount())
         {

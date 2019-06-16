@@ -1,5 +1,6 @@
 package com.spacer.event.ui.main.page;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.firebase.firestore.auth.User;
 import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -24,11 +28,12 @@ public class SamplePage extends SupportFragment {
     void back() {
         getMainActivity().dismiss();
     }
+
     @OnClick(R.id.button)
     void goToSomeWhere() {
         String text = mEditText.getText().toString();
         int value = -1; try {
-        value =Integer.parseInt(text);
+        value = Integer.parseInt(text);
         getMainActivity().presentFragment(SamplePageTwo.newInstance(value));
         } catch (Exception e) {
             getMainActivity().presentFragment(new SamplePageTwo());

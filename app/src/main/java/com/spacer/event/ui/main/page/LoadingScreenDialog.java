@@ -1,6 +1,7 @@
 package com.spacer.event.ui.main.page;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -58,9 +59,29 @@ public class LoadingScreenDialog extends DialogFragment {
     }
 
     public void showFailureThenDismiss(String error) {
-        mLoader.setVisibility(View.GONE);
-        Toasty.error(getContext(),error).show();
-        this.dismiss();
+        if(isResumed())
+        try {
+            mLoader.setVisibility(View.GONE);
+            if(getContext()!=null)
+            Toasty.error(getContext(), error).show();
+            this.dismiss();
+        } catch (Exception ignored) {}
     }
 
+    DialogInterface.OnCancelListener mOnCancelListener;
+
+    public void setOnCancelListener(DialogInterface.OnCancelListener listener) {
+        mOnCancelListener = listener;
+    }
+
+    public void removeOnCancelListener() {
+        mOnCancelListener = null;
+    }
+
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if(mOnCancelListener!=null) mOnCancelListener.onCancel(dialog);
+        super.onCancel(dialog);
+    }
 }

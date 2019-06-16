@@ -127,6 +127,13 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
         String name = user.getDisplayName();
         if(name==null||name.isEmpty()) mName.setText("Unknown name");
         else mName.setText(name);
+
+        String detail = mUser.getEmail();
+        if(detail==null||detail.isEmpty()) detail = mUser.getPhoneNumber();
+        if(detail==null) mDetail.setVisibility(View.GONE);
+        else mDetail.setVisibility(View.VISIBLE);
+
+        mDetail.setText(detail);
     }
 
     @Override
