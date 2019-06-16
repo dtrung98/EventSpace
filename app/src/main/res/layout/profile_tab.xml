@@ -33,37 +33,39 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/avatar"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="42dp"
                 android:background="@color/DarkerBlack"
-                android:padding="3dp"
                 android:scaleType="centerCrop"
                 android:tint="#090909"
-                android:layout_marginStart="16dp"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/status_bar"
                 app:riv_border_color="@color/FocusBlue"
                 app:riv_border_width="2dp"
-                app:riv_corner_radius="65dp"
+                app:riv_oval="true"
                 app:riv_mutate_background="true" />
             <TextView
                 android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/avatar"
                 app:layout_constraintBottom_toTopOf="@id/detail"
                 app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="8dp"
                 tools:text="Le Dinh Trung"
                 android:maxLines="1"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:ellipsize="end"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/helvetica_font"/>
             <TextView
                 android:id="@+id/detail"
@@ -72,30 +74,17 @@
                 app:layout_constraintTop_toBottomOf="@id/name"
                 app:layout_constraintStart_toStartOf="@id/name"
                 app:layout_constraintEnd_toEndOf="@id/name"
+                android:gravity="center"
                 android:maxLines="1"
                 android:ellipsize="end"
-                tools:text="trung17dinhle@gmail.com"
-                app:layout_constraintBottom_toTopOf="@id/edit_account"/>
-            <TextView
-                android:id="@+id/edit_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/detail"
-                app:layout_constraintBottom_toBottomOf="@id/avatar"
-                app:layout_constraintStart_toStartOf="@id/name"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:layout_marginTop="8dp"
+
                 android:textColor="@color/FlatWhite"
-                android:background="@drawable/background_edit_account"
-                android:text="Edit profile"
-                android:textStyle="bold"
-                android:textAllCaps="true"/>
+                tools:text="trung17dinhle@gmail.com" />
             <View
-                android:id="@+id/log_out_panel"
+                android:id="@+id/profile_panel"
                 android:layout_width="0dp"
                 android:layout_height="75dp"
-                app:layout_constraintTop_toBottomOf="@id/avatar"
+                app:layout_constraintTop_toBottomOf="@id/detail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="8dp"
@@ -105,6 +94,166 @@
                 android:focusable="true"
                 android:layout_marginTop="32dp"/>
             <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="@id/profile_panel"
+                app:layout_constraintTop_toTopOf="@id/profile_panel"
+                app:layout_constraintBottom_toBottomOf="@id/profile_panel"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                app:srcCompat="@drawable/account_settings"/>
+            <TextView
+                android:id="@+id/profile_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/profile_panel"
+                app:layout_constraintBottom_toTopOf="@id/profile_description"
+                app:layout_constraintStart_toEndOf="@id/profile_icon"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="@id/profile_panel"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/FlatWhite"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:text="Your Profile"/>
+            <TextView
+                android:id="@+id/profile_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/profile_title"
+                app:layout_constraintBottom_toBottomOf="@id/profile_panel"
+                app:layout_constraintStart_toEndOf="@id/profile_icon"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="@id/profile_title"
+
+                android:textSize="13sp"
+                android:textColor="@color/FlatWhite"
+                android:text="Watch your detail profile, and update it too"/>
+            <View
+                android:id="@+id/admin_panel"
+                android:layout_width="0dp"
+                android:layout_height="75dp"
+                app:layout_constraintTop_toBottomOf="@id/profile_panel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_item_event_list"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="4dp"/>
+            <ImageView
+                android:id="@+id/admin_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="@id/admin_panel"
+                app:layout_constraintTop_toTopOf="@id/admin_panel"
+                app:layout_constraintBottom_toBottomOf="@id/admin_panel"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                app:srcCompat="@drawable/account_settings"/>
+            <TextView
+                android:id="@+id/admin_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/admin_panel"
+                app:layout_constraintBottom_toTopOf="@id/admin_description"
+                app:layout_constraintStart_toEndOf="@id/admin_icon"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="@id/admin_panel"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/FlatWhite"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:text="System Control Center"/>
+            <TextView
+                android:id="@+id/admin_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/admin_title"
+                app:layout_constraintBottom_toBottomOf="@id/admin_panel"
+                app:layout_constraintStart_toEndOf="@id/admin_icon"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="@id/admin_title"
+
+                android:textSize="13sp"
+                android:textColor="@color/FlatWhite"
+                android:text="used by Admin User"/>
+            <android.support.constraint.Group
+                android:id="@+id/control_center_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="admin_panel,admin_icon,admin_title,admin_description"
+                tools:visibility="visible"
+                android:visibility="gone"/>
+            <View
+                android:id="@+id/order_panel"
+                android:layout_width="0dp"
+                android:layout_height="75dp"
+                app:layout_constraintTop_toBottomOf="@id/admin_panel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_item_event_list"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="4dp"/>
+            <ImageView
+                android:id="@+id/order_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toStartOf="@id/order_panel"
+                app:layout_constraintTop_toTopOf="@id/order_panel"
+                app:layout_constraintBottom_toBottomOf="@id/order_panel"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                app:srcCompat="@drawable/order_history"/>
+            <TextView
+                android:id="@+id/order_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/order_panel"
+                app:layout_constraintBottom_toTopOf="@id/order_description"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/order_icon"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="@id/order_panel"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/FlatWhite"
+                android:text="History Orders"/>
+            <TextView
+                android:id="@+id/order_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/order_title"
+                app:layout_constraintBottom_toBottomOf="@id/order_panel"
+                app:layout_constraintStart_toEndOf="@id/order_icon"
+                android:layout_marginStart="16dp"
+                app:layout_constraintEnd_toEndOf="@id/order_title"
+
+                android:textSize="13sp"
+                android:textColor="@color/FlatWhite"
+                android:text="All the orders from your purchases are stored here"/>
+            <View
+                android:id="@+id/log_out_panel"
+                android:layout_width="0dp"
+                android:layout_height="75dp"
+                app:layout_constraintTop_toBottomOf="@id/order_panel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_item_event_list"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="4dp"/>
+            <ImageView
                 android:id="@+id/log_out_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -113,6 +262,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/log_out_panel"
                 android:layout_marginStart="16dp"
                 android:padding="8dp"
+                android:tint="@color/FocusYellowColor"
                 app:srcCompat="@drawable/exit"/>
             <TextView
                 android:id="@+id/log_out_title"
@@ -125,7 +275,7 @@
                 app:layout_constraintEnd_toEndOf="@id/log_out_panel"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:textColor="@color/FlatWhite"
+                android:textColor="@color/FocusYellowColor"
                 android:text="Sign out"/>
         </android.support.constraint.ConstraintLayout>
             <android.support.constraint.ConstraintLayout

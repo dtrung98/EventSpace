@@ -1,5 +1,6 @@
 package com.spacer.event.ui.main.root;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,11 +16,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
 import com.spacer.event.R;
-import com.spacer.event.listener.FireBaseDocumentSetListener;
+import com.spacer.event.listener.FireBaseGetDocumentResultListener;
+import com.spacer.event.model.UserInfo;
 import com.spacer.event.ui.main.MainActivity;
 import com.spacer.event.ui.main.page.inout.SignInFragment;
 import com.spacer.event.ui.main.page.inout.SignUpFragment;
@@ -29,6 +34,7 @@ import com.spacer.event.util.Tool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 
 public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     private static final String TAG = "ProfileTab";
@@ -42,6 +48,8 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     View mSignedInPanel;
 
     @BindView(R.id.both_panel) View mBothPanel;
+
+    @BindView(R.id.avatar) ImageView mAvatar;
 
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -74,6 +82,9 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     public void init() {
         mStatusBar.getLayoutParams().height = Tool.getStatusHeight(getResources());
         mStatusBar.requestLayout();
+        mSwipeRefresh.setColorSchemeResources(R.color.FlatOrange);
+        mSwipeRefresh.setProgressViewOffset(true,mSwipeRefresh.getProgressViewStartOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set),mSwipeRefresh.getProgressViewEndOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set));
+
     }
 
     @OnClick(R.id.sign_in)
@@ -98,6 +109,7 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     }
 
     public void refreshData() {
+
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         if(mUser==null) {
             Log.d(TAG, "refreshData: null user");
@@ -112,7 +124,6 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
             mSignedInPanel.setVisibility(View.VISIBLE);
             getProfile(mUser);
         }
-        mSwipeRefresh.setRefreshing(false);
     }
     @BindView(R.id.name)
     TextView mName;
@@ -120,20 +131,67 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     @BindView(R.id.detail)
     TextView mDetail;
 
-    @BindView(R.id.avatar)
-    ImageView mAvatar;
 
     private void getProfile(FirebaseUser user) {
-        String name = user.getDisplayName();
-        if(name==null||name.isEmpty()) mName.setText("Unknown name");
+        mSwipeRefresh.setRefreshing(true);
+        mUserInfo = null;
+        FirebaseFirestore.getInstance()
+                .collection(SignUpFragment.FIREBASE_USER_INFOS)
+                .document(user.getUid())
+                .get()
+                .addOnSuccessListener(mGetProfileListener)
+                .addOnFailureListener(mGetProfileListener);
+    }
+
+    private void updateProfile() {
+        mUser= FirebaseAuth.getInstance().getCurrentUser();
+
+        String name=null;
+        if(mUserInfo!=null) name = mUserInfo.getFullName();
+        else if(mUser!=null) name = mUser.getDisplayName();
+
+        if(name==null||name.isEmpty())
+            mName.setText(R.string.unknown_name);
         else mName.setText(name);
 
-        String detail = mUser.getEmail();
-        if(detail==null||detail.isEmpty()) detail = mUser.getPhoneNumber();
-        if(detail==null) mDetail.setVisibility(View.GONE);
-        else mDetail.setVisibility(View.VISIBLE);
 
-        mDetail.setText(detail);
+        String detail=null;
+        if(mUserInfo!=null) detail = mUserInfo.getEmail();
+        else if(mUser!=null) {
+            detail = mUser.getEmail();
+            if(detail == null||detail.isEmpty()) detail = mUser.getPhoneNumber();
+        }
+
+        if(detail==null||detail.isEmpty()) mDetail.setVisibility(View.GONE);
+        else mDetail.setText(detail);
+
+        int errorRes;
+        if(mUserInfo==null) errorRes = R.drawable.user_gender_undefined;
+        else if(mUserInfo.getGender()== UserInfo.GENDER_MALE) errorRes = R.drawable.user_male;
+        else if(mUserInfo.getGender()==UserInfo.GENDER_FEMALE) errorRes = R.drawable.user_female;
+        else errorRes = R.drawable.user_gender_undefined;
+
+        if(mUser!=null)  {
+           Uri uri = mUser.getPhotoUrl();
+            Glide.with(this)
+                    .load(uri)
+                    .placeholder(R.drawable.user_gender_undefined)
+                    .error(errorRes)
+                    .into(mAvatar);
+        }
+
+        if(mUserInfo!=null&&mUserInfo.getUserType().equals(UserInfo.ADMIN))
+            mControlCenterGroup.setVisibility(View.VISIBLE);
+        else mControlCenterGroup.setVisibility(View.GONE);
+
+        mSwipeRefresh.setRefreshing(false);
+    }
+    @BindView(R.id.control_center_group)
+    Group mControlCenterGroup;
+
+    @OnClick(R.id.admin_panel)
+    void goToControlCenter() {
+        Toasty.warning(mSwipeRefresh.getContext(),"n't be written yet").show();
     }
 
     @Override
@@ -142,6 +200,7 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
             ((MainActivity)getActivity()).removeSignInOutListener(this);
         super.onDestroyView();
     }
+    private com.spacer.event.model.UserInfo mUserInfo;
 
     @Override
     public void onJustSignIn(FirebaseUser user) {
@@ -153,4 +212,25 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     public void onJustSignOut() {
         refreshData();
     }
+
+    private FireBaseGetDocumentResultListener mGetProfileListener = new FireBaseGetDocumentResultListener() {
+        @Override
+        public void onSuccess(DocumentSnapshot documentSnapshot) {
+            if(documentSnapshot.exists()) {
+                mUserInfo = documentSnapshot.toObject(UserInfo.class);
+            }
+            updateProfile();
+
+        }
+
+        @Override
+        public void onFailure(@NonNull Exception e) {
+
+            Toasty.warning(mSwipeRefresh.getContext(),"Sorry, Can't get your profile, please refresh again!").show();
+            updateProfile();
+
+        }
+
+
+    };
 }

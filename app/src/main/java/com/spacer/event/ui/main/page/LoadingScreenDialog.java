@@ -46,6 +46,7 @@ public class LoadingScreenDialog extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
         ButterKnife.bind(this,view);
+        setCancelable(false);
     }
 
     public void showSuccessThenDismiss(String message) {
@@ -77,7 +78,6 @@ public class LoadingScreenDialog extends DialogFragment {
     public void removeOnCancelListener() {
         mOnCancelListener = null;
     }
-
 
     @Override
     public void onCancel(DialogInterface dialog) {

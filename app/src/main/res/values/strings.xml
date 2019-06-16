@@ -59,6 +59,8 @@
     <string name="retype_match">Retype and password do not match</string>
     <string name="terms_confirm">Please read and confirm our Terms and Privacy</string>
     <string name="fullname_empty">Full Name cannot be blank</string>
+    <string name="name_empty">Name can not be blank</string>
+    <string name="unknown_name">Unknow Name</string>
 
 
 </resources>
