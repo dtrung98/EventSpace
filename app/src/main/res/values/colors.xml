@@ -38,5 +38,6 @@
     <color name="FocusGreen">#50C89E</color>
     <color name="FocusBlue">#4facfe</color>
     <color name="success_stroke_color">#A5DC86</color>
-
+    <color name="panel_background">#090909</color>
+    <color name="setting_label_color">#B8B8B8</color>
 </resources>

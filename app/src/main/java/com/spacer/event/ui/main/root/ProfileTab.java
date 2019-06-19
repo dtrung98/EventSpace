@@ -47,6 +47,8 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     @BindView(R.id.signed_in_panel)
     View mSignedInPanel;
 
+    @BindView(R.id.profile_panel) View profilePanel;
+
     @BindView(R.id.both_panel) View mBothPanel;
 
     @BindView(R.id.avatar) ImageView mAvatar;
@@ -85,6 +87,12 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
         mSwipeRefresh.setColorSchemeResources(R.color.FlatOrange);
         mSwipeRefresh.setProgressViewOffset(true,mSwipeRefresh.getProgressViewStartOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set),mSwipeRefresh.getProgressViewEndOffset()+(int)getResources().getDimension(R.dimen.swipe_top_off_set));
 
+    }
+
+    @OnClick(R.id.profile_panel)
+    void goToProfileDetail(){
+        if(getActivity() instanceof MainActivity)
+            ((MainActivity)getActivity()).presentFragment(DetailProfileFragment.newInstance());
     }
 
     @OnClick(R.id.sign_in)

@@ -61,6 +61,8 @@
     <string name="fullname_empty">Full Name cannot be blank</string>
     <string name="name_empty">Name can not be blank</string>
     <string name="unknown_name">Unknow Name</string>
+    <string name="string_after_leave">Everything will be deleted after you leave !</string>
+    <string name="okay_i_know">Okay i know</string>
 
 
 </resources>

@@ -9,6 +9,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.FragmentNavigationController;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity   {
     FragmentNavigationController mNavigationController;
     FirebaseAuth mAuth;
     public FirebaseUser user;
+    public FirebaseFirestore mDatabase;
 
     public void justSignIn(FirebaseUser user) {
         for (SignInOutStatusChanged listener :
