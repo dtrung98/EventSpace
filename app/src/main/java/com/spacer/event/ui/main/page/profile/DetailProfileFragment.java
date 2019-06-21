@@ -260,7 +260,7 @@ public class DetailProfileFragment extends SupportFragment {
 
     private void sendUserInfoToFirebase() {
         FirebaseFirestore.getInstance().collection("user_infos").document(mFirebaseUser.getUid())
-                .set(mFirebaseUser)
+                .set(userInfo)
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "addUserToDatabase:success");
                 })
