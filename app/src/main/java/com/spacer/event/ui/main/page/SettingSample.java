@@ -10,30 +10,23 @@ import android.view.ViewGroup;
 import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
-import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SamplePageTwo extends SupportFragment {
-    private static final String TAG = "SamplePageTwo";
+public class SettingSample extends SupportFragment {
+    private static final String TAG = "DashBoard";
 
     @OnClick(R.id.back_button)
     void back() {
         getMainActivity().dismiss();
     }
-    @OnClick(R.id.button)
-    void goToSomeWhere() {
-        getMainActivity().presentFragment(new SamplePageThree());
-    }
 
-    @BindView(R.id.root) View mRoot;
+    @BindView(R.id.status_bar) View mStatusBar;
 
-    public static SamplePageTwo newInstance(int value) {
-        SamplePageTwo fragment = new SamplePageTwo();
-        fragment.p = value;
-        return fragment;
+
+    public static SettingSample newInstance() {
+       return new SettingSample();
     }
 
     @Nullable
@@ -46,16 +39,10 @@ public class SamplePageTwo extends SupportFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
-        mRoot.setBackgroundResource(R.color.FlatGreen);
     }
 
-    int p = -1;
     @Override
-    public int defaultTransition() {
-        if(p==-1) {
-            Random r = new Random();
-            p = r.nextInt(39) + 1; //exclude NONE present style
-        }
-        return p;
+    public void onSetStatusBarMargin(int value) {
+        mStatusBar.getLayoutParams().height = value;
     }
 }

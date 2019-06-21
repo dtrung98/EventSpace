@@ -39,11 +39,10 @@
                 android:layout_marginBottom="42dp"
                 android:background="@color/DarkerBlack"
                 android:scaleType="centerCrop"
-                android:tint="#090909"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/status_bar"
-                app:riv_border_color="@color/FocusBlue"
+                app:riv_border_color="@color/FlatOrange"
                 app:riv_border_width="2dp"
                 app:riv_oval="true"
                 app:riv_mutate_background="true" />
@@ -102,6 +101,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/profile_panel"
                 android:layout_marginStart="16dp"
                 android:padding="8dp"
+                android:tint="@color/FlatBlue"
+                android:alpha="0.8"
                 app:srcCompat="@drawable/account_settings"/>
             <TextView
                 android:id="@+id/profile_title"
@@ -153,7 +154,9 @@
                 app:layout_constraintBottom_toBottomOf="@id/admin_panel"
                 android:layout_marginStart="16dp"
                 android:padding="8dp"
-                app:srcCompat="@drawable/account_settings"/>
+                android:tint="@color/FlatTealBlue"
+                android:alpha="0.95"
+                app:srcCompat="@drawable/admin"/>
             <TextView
                 android:id="@+id/admin_title"
                 android:layout_width="0dp"
@@ -211,6 +214,8 @@
                 app:layout_constraintBottom_toBottomOf="@id/order_panel"
                 android:layout_marginStart="16dp"
                 android:padding="8dp"
+                android:tint="@color/FlatPurple"
+                android:alpha="0.95"
                 app:srcCompat="@drawable/order_history"/>
             <TextView
                 android:id="@+id/order_title"

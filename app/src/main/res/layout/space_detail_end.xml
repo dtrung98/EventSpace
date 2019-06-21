@@ -120,7 +120,7 @@
             android:overScrollMode="never"
             tools:spanCount="2"/>
         <ImageView
-            android:id="@+id/back"
+            android:id="@+id/back_button"
             android:layout_width="@dimen/dp50"
             android:layout_height="@dimen/dp50"
             app:layout_constraintTop_toBottomOf="@id/status_bar_parent"

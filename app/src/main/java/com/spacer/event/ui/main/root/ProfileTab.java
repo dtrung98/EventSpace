@@ -26,6 +26,7 @@ import com.spacer.event.R;
 import com.spacer.event.listener.FireBaseGetDocumentResultListener;
 import com.spacer.event.model.UserInfo;
 import com.spacer.event.ui.main.MainActivity;
+import com.spacer.event.ui.main.page.admin.DashBoard;
 import com.spacer.event.ui.main.page.inout.SignInFragment;
 import com.spacer.event.ui.main.page.inout.SignUpFragment;
 import com.spacer.event.util.SignInOutStatusChanged;
@@ -191,7 +192,11 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
 
     @OnClick(R.id.admin_panel)
     void goToControlCenter() {
-        Toasty.warning(mSwipeRefresh.getContext(),"n't be written yet").show();
+        if(mUserInfo==null||!mUserInfo.isAdminUser())
+        Toasty.warning(mSwipeRefresh.getContext(),"Sorry,this feature's only used for admin users").show();
+        else if(getActivity() instanceof MainActivity) {
+            ((MainActivity)getActivity()).presentFragment(DashBoard.newInstance());
+        }
     }
 
     @Override
