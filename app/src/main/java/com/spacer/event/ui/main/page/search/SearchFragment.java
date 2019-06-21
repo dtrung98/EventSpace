@@ -41,7 +41,7 @@ public class SearchFragment extends SupportFragment implements SearchView.OnQuer
         return fragment;
     }
 
-    @OnClick(R.id.back)
+    @OnClick(R.id.back_button)
     void back() {
         getMainActivity().dismiss();
     }

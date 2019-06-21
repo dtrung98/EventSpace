@@ -40,7 +40,7 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
         return fragment;
     }
 
-    @OnClick(R.id.back)
+    @OnClick(R.id.back_button)
     void back() {
         getMainActivity().dismiss();
     }
@@ -48,7 +48,7 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
 
-    @BindView(R.id.back) View mBack;
+    @BindView(R.id.back_button) View mBack;
     @BindView(R.id.title)
     TextView mTitle;
 

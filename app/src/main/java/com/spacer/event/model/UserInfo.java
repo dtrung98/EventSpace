@@ -120,6 +120,9 @@ public class UserInfo {
     public String getUserType() {
         return userType;
     }
+    public boolean isAdminUser() {
+        return userType.equals(ADMIN);
+    }
 
     public void setUserType(String userType) {
         this.userType = userType;

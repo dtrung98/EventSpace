@@ -62,8 +62,10 @@
     <string name="name_empty">Name can not be blank</string>
     <string name="unknown_name">Unknow Name</string>
     <string name="string_after_leave">Everything will be deleted after you leave !</string>
-    <string name="okay_i_know">Okay i know</string>
+    <string name="okay_i_know">Okay, I know</string>
     <string name="profile_updated">Profile updated</string>
+    <string name="space_management">Space Management</string>
+    <string name="service_management">Service Management</string>
 
 
 </resources>

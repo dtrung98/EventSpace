@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.spacer.event.R;
-import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
 import java.util.Random;
@@ -20,7 +19,7 @@ import butterknife.OnClick;
 public class SamplePageThree extends SupportFragment {
     private static final String TAG = "SamplePageThree";
 
-    @OnClick(R.id.back)
+    @OnClick(R.id.back_button)
     void back() {
         getMainActivity().dismiss();
     }

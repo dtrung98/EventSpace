@@ -117,9 +117,9 @@ public class DetailProfileFragment extends SupportFragment {
         getUserInfoFromFirebase();
     }
 
-    
+
     @Override
-    public int defaultDuration() {
+    public int defaultTransition() {
         return PresentStyle.ROTATE_DOWN_LEFT;
     }
 
