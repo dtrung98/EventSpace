@@ -1,4 +1,4 @@
-package com.spacer.event.ui.main.root;
+package com.spacer.event.ui.main.page.profile;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -16,16 +16,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,14 +46,13 @@ public class DetailProfileFragment extends SupportFragment {
     private static final String TAG="ProfileDetailFragment";
     UserInfo userInfo;
     FirebaseAuth mAuth;
-    FirebaseFirestore mDatabase;
     FirebaseUser mFirebaseUser;
 
     @BindView(R.id.btn_back)
-    Button btnBack;
+    View btnBack;
 
     @BindView(R.id.btn_save)
-    Button btnSave;
+    View btnSave;
 
     @BindView(R.id.avatar)
     RoundedImageView avatar;
@@ -81,10 +79,12 @@ public class DetailProfileFragment extends SupportFragment {
     TextView txtBirthday;
 
     @BindView(R.id.edi_phonenumber)
-    TextInputEditText edtPhoneNumber;
+    TextInputLayout edtPhoneNumber;
 
     @BindView(R.id.edi_address)
-    TextInputEditText edtAddress;
+    TextInputLayout edtAddress;
+
+    @BindView(R.id.toolbar_paren) View mToolbarParent;
 
     public static DetailProfileFragment newInstance() {
 
@@ -93,6 +93,11 @@ public class DetailProfileFragment extends SupportFragment {
         DetailProfileFragment fragment = new DetailProfileFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onSetStatusBarMargin(int value) {
+        ((ViewGroup.MarginLayoutParams)mToolbarParent.getLayoutParams()).topMargin = value;
     }
 
     @Nullable
@@ -109,8 +114,7 @@ public class DetailProfileFragment extends SupportFragment {
         mAuth =FirebaseAuth.getInstance();
         mFirebaseUser = mAuth.getCurrentUser();
 
-        mDatabase = getMainActivity().mDatabase;
-        getUserInfoFromFirebae();
+        getUserInfoFromFirebase();
     }
 
     
@@ -187,8 +191,8 @@ public class DetailProfileFragment extends SupportFragment {
     private void editUserInfo() {
         String name = Objects.requireNonNull(edtFullName.getText()).toString().trim();
         String email = Objects.requireNonNull(edtEmail.getText()).toString().trim();
-        String phone = Objects.requireNonNull(edtPhoneNumber.getText()).toString().trim();
-        String address = Objects.requireNonNull(edtAddress.getText()).toString().trim();
+        String phone = Objects.requireNonNull(edtPhoneNumber.getEditText().getText()).toString().trim();
+        String address = Objects.requireNonNull(edtAddress.getEditText().getText()).toString().trim();
         String birthday = Objects.requireNonNull(txtBirthday.getText()).toString().trim();
         int gender = -1;
 
@@ -207,11 +211,14 @@ public class DetailProfileFragment extends SupportFragment {
         sendUserInfoToFirebase();
     }
 
-    private void getUserInfoFromFirebae() {
+    private void getUserInfoFromFirebase() {
         String id = mFirebaseUser.getUid();
 
-        DocumentReference documentReference = mDatabase.collection("user_infos").document(id);
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        FirebaseFirestore.getInstance()
+                .collection("user_infos")
+                .document(id)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 userInfo = documentSnapshot.toObject(UserInfo.class);
@@ -236,8 +243,8 @@ public class DetailProfileFragment extends SupportFragment {
         balance.setText(String.format("%d", userInfo.getBalance()));
         edtFullName.setText(userInfo.getFullName());
         edtEmail.setText(userInfo.getEmail());
-        edtPhoneNumber.setText(userInfo.getPhoneNumber());
-        edtAddress.setText(userInfo.getAddress());
+        edtPhoneNumber.getEditText().setText(userInfo.getPhoneNumber());
+        edtAddress.getEditText().setText(userInfo.getAddress());
         txtBirthday.setText(userInfo.getBirthDay());
 
         if(userInfo.getGender()== 0){
@@ -252,7 +259,7 @@ public class DetailProfileFragment extends SupportFragment {
     }
 
     private void sendUserInfoToFirebase() {
-        mDatabase.collection("user_infos").document(mFirebaseUser.getUid())
+        FirebaseFirestore.getInstance().collection("user_infos").document(mFirebaseUser.getUid())
                 .set(mFirebaseUser)
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "addUserToDatabase:success");

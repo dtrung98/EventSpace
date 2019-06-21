@@ -10,6 +10,7 @@
         android:background="@color/DarkerBlack">
 
         <LinearLayout
+            android:id="@+id/toolbar_paren"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:orientation="horizontal">
@@ -108,7 +109,7 @@
                 android:paddingEnd="12dp"
                 android:background="@drawable/rounded_corner_without_border_dark"
                 android:singleLine="true"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/FocusYellowColor"
                 android:textSize="17sp"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -137,7 +138,7 @@
                 android:paddingEnd="12dp"
                 android:background="@drawable/rounded_corner_without_border_dark"
                 android:singleLine="true"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/FocusYellowColor"
                 android:textSize="17sp"
                 android:inputType="textEmailAddress"
                 android:enabled="false"/>
@@ -232,7 +233,7 @@
                 android:background="@drawable/rounded_corner_without_border_dark"
                 android:drawablePadding="5dp"
                 android:singleLine="true"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/FocusYellowColor"
                 android:textSize="17sp"
                 android:inputType="phone"/>
         </android.support.design.widget.TextInputLayout>
@@ -270,12 +271,12 @@
             android:id="@+id/btn_save"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
             android:layout_marginBottom="20dp"
-            android:layout_gravity="end"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/FocusYellowColor"
             android:text="@string/btn_save"
             android:layout_marginTop="20dp"
-            android:background="@drawable/btn_signin"
+            android:background="@drawable/google_white_background"
             android:textStyle="bold"/>
     </LinearLayout>
 </ScrollView>

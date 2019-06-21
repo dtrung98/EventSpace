@@ -21,13 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 import com.spacer.event.R;
 import com.spacer.event.listener.FireBaseGetDocumentResultListener;
 import com.spacer.event.model.UserInfo;
 import com.spacer.event.ui.main.MainActivity;
 import com.spacer.event.ui.main.page.inout.SignInFragment;
 import com.spacer.event.ui.main.page.inout.SignUpFragment;
+import com.spacer.event.ui.main.page.profile.DetailProfileFragment;
 import com.spacer.event.util.SignInOutStatusChanged;
 import com.spacer.event.util.Tool;
 

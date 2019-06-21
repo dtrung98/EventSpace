@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity   {
     FragmentNavigationController mNavigationController;
     FirebaseAuth mAuth;
     public FirebaseUser user;
-    public FirebaseFirestore mDatabase;
 
     public void justSignIn(FirebaseUser user) {
         for (SignInOutStatusChanged listener :
