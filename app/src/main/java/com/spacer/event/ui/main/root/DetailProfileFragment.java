@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.spacer.event.model.UserInfo;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -40,9 +41,10 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 
 public class DetailProfileFragment extends SupportFragment {
-    private static final String TAG="ProfileDetail";
+    private static final String TAG="ProfileDetailFragment";
     UserInfo userInfo;
     FirebaseAuth mAuth;
     FirebaseFirestore mDatabase;
@@ -127,6 +129,7 @@ public class DetailProfileFragment extends SupportFragment {
         Calendar newCalendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                 new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("DefaultLocale")
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         String str_day = Integer.toString(day);
@@ -137,7 +140,7 @@ public class DetailProfileFragment extends SupportFragment {
                         if (1 == str_month.length()) {
                             str_month = "0" + str_month;
                         }
-                        txtBirthday.setText(str_day + "/" + str_month + "/" + year);
+                        txtBirthday.setText(String.format("%s/%s/%d", str_day, str_month, year));
                     }
                 },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),  newCalendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -161,13 +164,13 @@ public class DetailProfileFragment extends SupportFragment {
     @OnClick(R.id.btn_save)
     void saveUserInfo(){
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle("Confỉlm");
+        alertDialog.setTitle("Confirm");
         alertDialog.setMessage("Do you want to save change?");
         alertDialog.setButton(Dialog.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 editUserInfo();
-                Toast.makeText(getContext(), "Profile updated", Toast.LENGTH_SHORT).show();
+                Toasty.success(alertDialog.getContext(), alertDialog.getContext().getString(R.string.profile_updated)).show();
                 getMainActivity().dismiss();
             }
         });
@@ -222,14 +225,15 @@ public class DetailProfileFragment extends SupportFragment {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     private void displayUserProfile() {
-        if(userInfo.getAvaUrl().matches("")){
+        if(userInfo.getAvaUrl()!=null){
             Glide.with(this).load(R.drawable.user_male).into(avatar);
         }
         else {
             Glide.with(this).load(userInfo.getAvaUrl()).into(avatar);
         }
-        balance.setText(Integer.toString(userInfo.getBalance()));
+        balance.setText(String.format("%d", userInfo.getBalance()));
         edtFullName.setText(userInfo.getFullName());
         edtEmail.setText(userInfo.getEmail());
         edtPhoneNumber.setText(userInfo.getPhoneNumber());
@@ -251,10 +255,10 @@ public class DetailProfileFragment extends SupportFragment {
         mDatabase.collection("user_infos").document(mFirebaseUser.getUid())
                 .set(mFirebaseUser)
                 .addOnSuccessListener(aVoid -> {
-                    Log.w(TAG, "addUserToDatabase:success");
+                    Log.d(TAG, "addUserToDatabase:success");
                 })
                 .addOnFailureListener(e -> {
-                    Log.w(TAG, "addUserToDatabase:failure", e);
+                    Log.d(TAG, "addUserToDatabase:failure", e);
                 });
     }
 }
