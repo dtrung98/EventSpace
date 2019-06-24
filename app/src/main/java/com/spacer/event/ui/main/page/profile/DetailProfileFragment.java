@@ -43,7 +43,7 @@ import es.dmoral.toasty.Toasty;
 
 public class DetailProfileFragment extends SupportFragment {
     private static final String TAG="ProfileDetailFragment";
-    UserInfo userInfo;
+    private UserInfo userInfo = new UserInfo();
     FirebaseAuth mAuth;
     FirebaseUser mFirebaseUser;
 
@@ -172,6 +172,7 @@ public class DetailProfileFragment extends SupportFragment {
         alertDialog.setButton(Dialog.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+//                getUserInfoFromFirebase();
                 editUserInfo();
                 Toasty.success(alertDialog.getContext(), alertDialog.getContext().getString(R.string.profile_updated)).show();
                 getMainActivity().dismiss();
@@ -198,8 +199,7 @@ public class DetailProfileFragment extends SupportFragment {
         if(radMale.isChecked()) gender = 0;
         else if (radFemale.isChecked()) gender = 1;
         else  gender = 2;
-
-        userInfo = new UserInfo();
+        
         userInfo.setId(mFirebaseUser.getUid());
         userInfo.setFullName(name);
         userInfo.setEmail(email);
@@ -222,6 +222,7 @@ public class DetailProfileFragment extends SupportFragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 userInfo = documentSnapshot.toObject(UserInfo.class);
                 displayUserProfile();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -233,12 +234,13 @@ public class DetailProfileFragment extends SupportFragment {
 
     @SuppressLint("DefaultLocale")
     private void displayUserProfile() {
-        if(userInfo.getAvaUrl()!=null){
+        if(userInfo.getAvaUrl()==null){
             Glide.with(this).load(R.drawable.user_male).into(avatar);
         }
         else {
             Glide.with(this).load(userInfo.getAvaUrl()).into(avatar);
         }
+
         balance.setText(String.format("%d", userInfo.getBalance()));
         edtFullName.setText(userInfo.getFullName());
         edtEmail.setText(userInfo.getEmail());
