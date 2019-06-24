@@ -6,6 +6,16 @@ public class EventOrder {
     private String id ="";
     private String dateFrom="";
     private String dateTo = "";
+
+    public String getPurchaseTime() {
+        return purchaseTime;
+    }
+
+    public void setPurchaseTime(String purchaseTime) {
+        this.purchaseTime = purchaseTime;
+    }
+
+    private String purchaseTime ="";
     private String event ="";
     private String title = "";
     private int price = 0;

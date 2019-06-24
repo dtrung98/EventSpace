@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Adapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,6 +34,7 @@ import com.google.firebase.firestore.auth.User;
 import com.spacer.event.R;
 import com.spacer.event.listener.FireBaseCollectionListener;
 import com.spacer.event.listener.FireBaseGetDocumentResultListener;
+import com.spacer.event.listener.FireBaseSetDocumentResultListener;
 import com.spacer.event.model.EventOrder;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Service;
@@ -39,10 +44,12 @@ import com.spacer.event.ui.main.MainActivity;
 import com.spacer.event.ui.main.page.SamplePageThree;
 import com.spacer.event.ui.main.page.eventspace.SpaceDetailFragment;
 import com.spacer.event.ui.main.page.inout.SignInFragment;
+import com.spacer.event.ui.widget.SuccessTickView;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 import com.spacer.event.util.Constant;
 import com.spacer.event.util.SignInOutStatusChanged;
+import com.tuyenmonkey.mkloader.MKLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -264,11 +271,23 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
     private void refreshUserInfoData() {
 
     }
+    private String getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        String str_day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+        String str_month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
+        if (1 == str_day.length()) {
+            str_day = "0" + str_day;
+        }
+        if (1 == str_month.length()) {
+            str_month = "0" + str_month;
+        }
+        return String.format("%s/%s/%d", str_day,str_month,calendar.get(Calendar.YEAR));
+    }
 
     @SuppressLint("DefaultLocale")
     private void bind() {
-        Calendar calendar = Calendar.getInstance();
-        mOrder.setDateFrom(String.format("%s/%s/%d", calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH),calendar.get(Calendar.YEAR)));
+
+        mOrder.setDateFrom(getCurrentDate());
         mDateFrom.setText(mOrder.getDateFrom());
         checkoutAbleToRefreshing();
 
@@ -331,7 +350,6 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         }
     }
 
-
     @BindView(R.id.purchase_panel) View mPurchasePanel;
     @BindView(R.id.purchase_price) TextView mPurchasePrice;
     @BindView(R.id.purchase_text) TextView mPurchaseText;
@@ -359,12 +377,111 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
     }
 
     @OnClick(R.id.purchase_panel)
-    void purchaseNow() {
+    void tryToPurchase() {
         if(mPurchasePrice.getVisibility()==View.GONE) {
             getNavigationController().presentFragment(SignInFragment.newInstance());
         } else {
-            Toasty.success(mPurchaseText.getContext(),"Ok, u'll get it soon").show();
+            //Toasty.success(mPurchaseText.getContext(),"Ok, u'll get it soon").show();
+            purchaseNow();
         }
+    }
+
+    void purchaseNow() {
+        if(mUser==null||mUserInfo==null||mUserInfo.getBalance()<mPrice) return;
+        mOrder.setUserUID(mUser.getUid());
+        mOrder.setEvent(mEventType.getStaticName());
+        mOrder.setTitle(mEventType.getName());
+        mOrder.setPrice(mPrice);
+        mOrder.setSpaceID(mSpace.getId());
+        mOrder.setSpaceName(mSpace.getName());
+        mOrder.setServices(mAdapter.getData());
+        Calendar calendar = Calendar.getInstance();
+        mOrder.setPurchaseTime(getCurrentDate());
+        mOrder.setId(mUser.getUid()+"_"+mEventType.getStaticName()+"_"+mSpace.getId());
+
+        mUserInfo.setBalance(mUserInfo.getBalance() - mPrice);
+        mUserInfo.getOrderIDs().add(mOrder.getId());
+
+        mSendingDialog = new BottomSheetDialog(getActivity());
+
+        mSendingDialog.setContentView(R.layout.send_new_movie);
+        mSendingDialog.setCancelable(false);
+        mSendingDialog.findViewById(R.id.close).setOnClickListener(v -> cancelSending());
+        mSendingDialog.show();
+
+        FirebaseFirestore.getInstance()
+                .collection("event_orders")
+                .document(mOrder.getId())
+                .set(mOrder)
+                .addOnSuccessListener(aVoid -> {
+                FirebaseFirestore.getInstance()
+                        .collection("user_infos")
+                        .document(mUser.getUid())
+                        .update("balance",mUserInfo.getBalance(),"orderIDs",mUserInfo.getOrderIDs())
+                        .addOnSuccessListener(aVoid1 -> {
+                            setOnSuccess();
+                        })
+                        .addOnFailureListener(e -> {
+                           setOnFailure();
+                        });
+                })
+                .addOnFailureListener(e -> {
+                    setOnFailure();
+                });
+    }
+
+
+    private BottomSheetDialog mSendingDialog;
+    boolean cancelled = false;
+    void cancelSending() {
+        if(mSendingDialog!=null)
+            mSendingDialog.dismiss();
+        cancelled = true;
+    }
+    void setTextSending(String text,int color) {
+        if(mSendingDialog!=null) {
+            TextView textView = mSendingDialog.findViewById(R.id.sending_text);
+            if(textView!=null) {
+
+                AlphaAnimation aa = new AlphaAnimation(0,1);
+                aa.setFillAfter(true);
+                aa.setDuration(500);
+                textView.setText(text);
+                textView.setTextColor(color);
+                textView.startAnimation(aa);
+            }
+        }
+    }
+    void setOnSuccess() {
+        if(cancelled) return;
+        cancelled= false;
+        if(mSendingDialog!=null) {
+            MKLoader mkLoader = mSendingDialog.findViewById(R.id.loading);
+            if(mkLoader!=null) mkLoader.setVisibility(View.INVISIBLE);
+            SuccessTickView s = mSendingDialog.findViewById(R.id.success_tick_view);
+            if(s!=null) {
+
+                s.postDelayed(() -> {
+                    mSendingDialog.dismiss();
+                    mSwipeRefresh.postDelayed(this::showTicketPrint,350);
+                },2000);
+                s.setVisibility(View.VISIBLE);
+                s.startTickAnim();
+                setTextSending("The orders is successfully created !",getResources().getColor(R.color.FlatGreen));
+            }
+        }
+    }
+    void setOnFailure() {
+        if(mSendingDialog!=null){
+            mSendingDialog.dismiss();
+            if(getContext()!=null)
+            Toasty.error(getContext(),"Cannot finish your purchase, please try again!").show();
+        }
+    }
+
+    void showTicketPrint() {
+        getNavigationController().dismissFragment();
+        getNavigationController().presentFragment(PurchaseScreen.newInstance(mOrder,mUserInfo));
     }
 
     private ArrayList<Service> mAllServices = new ArrayList<>();
@@ -398,7 +515,7 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
                 checkingPurchaseStatus();
 
             }
-        },250);
+        },350);
 
     }
     @BindView(R.id.service_title) View mServiceTitle;

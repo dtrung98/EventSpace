@@ -70,6 +70,7 @@
     <string name="plz_sign_in">Please sign in to continue</string>
     <string name="purchase_now">Purchase now</string>
     <string name="not_enough_money">Not enough money to pay</string>
+    <string name="sending_data">Sending data...</string>
 
 
 </resources>
