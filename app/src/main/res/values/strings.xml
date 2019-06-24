@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EventSpace: Awesome Event Booking App</string>
+    <string name="app_name">Event Space</string>
     <string name="accessibility_overflow">Accessibility Overflow</string>
     <string name="trending">Trending</string>
     <string name="space">Space</string>
@@ -19,7 +19,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="retype_password">Retype password</string>
-    <string name="privacy">Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật của EventSpace.</string>
+    <string name="privacy">Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật của Event Space.</string>
     <string name="btn_create">Get Started</string>
     <string name="string_already">Already have an account?</string>
     <string name="sign_in">Sign In</string>
@@ -66,6 +66,10 @@
     <string name="profile_updated">Profile updated</string>
     <string name="space_management">Space Management</string>
     <string name="service_management">Service Management</string>
+    <string name="free">Free</string>
+    <string name="plz_sign_in">Please sign in to continue</string>
+    <string name="purchase_now">Purchase now</string>
+    <string name="not_enough_money">Not enough money to pay</string>
 
 
 </resources>

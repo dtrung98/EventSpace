@@ -18,6 +18,7 @@ import com.spacer.event.R;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Service;
 import com.spacer.event.model.Space;
+import com.spacer.event.ui.main.page.booking.BookingFragment;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
@@ -160,7 +161,7 @@ public class EventDetailFragment extends SupportFragment implements SpaceInEvent
 
     @Override
     public void onSpaceItemClick(Space space) {
-        getNavigationController().presentFragment(SpaceDetailFragment.newInstance(mSpaces,mEventTypes,space));
+        getNavigationController().presentFragment(BookingFragment.newInstance(space,mEventType));
     }
 
     private static class LoadSpacesTask extends AsyncTask<Void,Void,Void> {

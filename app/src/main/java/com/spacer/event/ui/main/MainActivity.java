@@ -7,12 +7,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.spacer.event.R;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.FragmentNavigationController;
-import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 import com.spacer.event.util.SignInOutStatusChanged;
 import com.spacer.event.util.Tool;
@@ -22,12 +19,10 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity   {
+public class MainActivity extends BaseEventSpaceActivity  {
     private static final String TAG = "MainActivity";
 
     FragmentNavigationController mNavigationController;
-    FirebaseAuth mAuth;
-    public FirebaseUser user;
 
     public void justSignIn(FirebaseUser user) {
         for (SignInOutStatusChanged listener :
@@ -118,9 +113,6 @@ public class MainActivity extends AppCompatActivity   {
 
 
         initBackStack(savedInstanceState);
-
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
 
     }
 

@@ -1,44 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-  >
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingTop="84dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <Button
-            android:id="@+id/sample_button"
-            android:layout_width="wrap_content"
+    >
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/DarkerBlack">
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                app:titleEnabled="false">
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/toolbar_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_collapseMode="pin"
+                    android:paddingTop="24dp"
+                    android:background="#DD23202B">
+                    <ImageView
+                        android:id="@+id/search"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="32dp"
+                        android:src="@drawable/search_thin"
+                        android:background="@drawable/background_item_space_tab"
+                        android:padding="10dp"/>
+                </android.support.constraint.ConstraintLayout>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Go to a page"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-    </android.support.v4.widget.NestedScrollView>
-    <View
-        android:id="@+id/status_bar"
-        android:layout_width="0dp"
-        android:layout_height="24dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        app:layout_constraintTop_toBottomOf="@id/status_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/trending"
-        android:textColor="@color/FlatWhite"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:gravity="center_vertical"
-        android:layout_marginStart="32dp"/>
-</android.support.constraint.ConstraintLayout>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:clipToPadding="false"
+                tools:layoutManager="LinearLayoutManager"
+                tools:listitem="@layout/item_trending"
+                android:paddingBottom="@dimen/bottom_navigation_parent_height"
+                android:paddingTop="8dp"
+                />
+            <TextView
+                android:id="@+id/error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Opp, something went wrong :(("
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="#666"
+                android:visibility="gone"
+                />
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -5,9 +5,27 @@ public class Service {
     private String staticName = "";
     private String name = "";
     private int primaryPrice = 0;
+
+    public int getPrice() {
+        if(isBonusService) return 0;
+        else if(!isCountService) return primaryPrice;
+        if(count<1) count = 1;
+        return count*primaryPrice;
+    }
+
     private String detail = "";
     private boolean isBonusService = false;
-    private boolean isCountingService = false;
+    private boolean isCountService = false;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    private int count = 1;
 
     public String getId() {
         return id;
@@ -57,11 +75,11 @@ public class Service {
         isBonusService = bonusService;
     }
 
-    public boolean isCountingService() {
-        return isCountingService;
+    public boolean getIsCountService() {
+        return isCountService;
     }
 
-    public void setCountingService(boolean countingService) {
-        isCountingService = countingService;
+    public void setIsCountService(boolean countingService) {
+        isCountService = countingService;
     }
 }

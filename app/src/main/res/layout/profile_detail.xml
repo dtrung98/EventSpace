@@ -10,7 +10,7 @@
         android:background="@color/DarkerBlack">
 
         <LinearLayout
-            android:id="@+id/toolbar_paren"
+            android:id="@+id/toolbar_parent"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:orientation="horizontal">
@@ -266,7 +266,6 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="17sp"/>
         </android.support.design.widget.TextInputLayout>
-
         <Button
             android:id="@+id/btn_save"
             android:layout_width="100dp"

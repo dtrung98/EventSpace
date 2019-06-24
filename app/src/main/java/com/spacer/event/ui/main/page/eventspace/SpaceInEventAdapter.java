@@ -174,7 +174,7 @@ public class SpaceInEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public class ServiceItemHolder extends RecyclerView.ViewHolder {
+    public static class ServiceItemHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.property) TextView mProperty;
         @BindView(R.id.value) TextView mValue;

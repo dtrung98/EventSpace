@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.spacer.event.R;
 import com.spacer.event.ui.main.root.spacetab.SpaceTab;
+import com.spacer.event.ui.main.root.trending.TrendingTab;
 
 import java.util.ArrayList;
 

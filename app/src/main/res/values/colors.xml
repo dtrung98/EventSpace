@@ -40,4 +40,5 @@
     <color name="success_stroke_color">#A5DC86</color>
     <color name="panel_background">#090909</color>
     <color name="setting_label_color">#B8B8B8</color>
+    <color name="cardColor">#1F1C26</color>
 </resources>

@@ -140,7 +140,6 @@ public class SpaceTab extends Fragment implements AppBarLayout.OnOffsetChangedLi
                 .addOnSuccessListener(mSpaceListener)
                 .addOnFailureListener(mSpaceListener);
 
-
     }
 
     private FireBaseCollectionListener mSpaceListener = new FireBaseCollectionListener() {

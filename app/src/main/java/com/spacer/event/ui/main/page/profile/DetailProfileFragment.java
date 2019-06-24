@@ -2,7 +2,6 @@ package com.spacer.event.ui.main.page.profile;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.spacer.event.model.UserInfo;
 
@@ -84,7 +83,7 @@ public class DetailProfileFragment extends SupportFragment {
     @BindView(R.id.edi_address)
     TextInputLayout edtAddress;
 
-    @BindView(R.id.toolbar_paren) View mToolbarParent;
+    @BindView(R.id.toolbar_parent) View mToolbarParent;
 
     public static DetailProfileFragment newInstance() {
 

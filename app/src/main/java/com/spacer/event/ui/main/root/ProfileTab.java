@@ -182,11 +182,13 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
 
         if(mUser!=null)  {
            Uri uri = mUser.getPhotoUrl();
-            Glide.with(this)
-                    .load(uri)
-                    .placeholder(R.drawable.user_gender_undefined)
-                    .error(errorRes)
-                    .into(mAvatar);
+           try {
+               Glide.with(this)
+                       .load(uri)
+                       .placeholder(R.drawable.user_gender_undefined)
+                       .error(errorRes)
+                       .into(mAvatar);
+           }catch (Exception ignored) {}
         }
 
         if(mUserInfo!=null&&mUserInfo.getUserType().equals(UserInfo.ADMIN))
@@ -218,11 +220,13 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
     @Override
     public void onJustSignIn(FirebaseUser user) {
         Log.d(TAG, "onJustSignIn: user "+user.getEmail());
+        if(getActivity()!=null)
         refreshData();
     }
 
     @Override
     public void onJustSignOut() {
+        if(getActivity()!=null)
         refreshData();
     }
 

@@ -20,6 +20,7 @@ import com.spacer.event.R;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Service;
 import com.spacer.event.model.Space;
+import com.spacer.event.ui.main.page.booking.BookingFragment;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
@@ -31,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SpaceDetailFragment extends SupportFragment {
+public class SpaceDetailFragment extends SupportFragment implements EventAdapter.EventTypeListener {
     private static final String TAG = "SpaceDetailFragment";
 
 
@@ -98,6 +99,7 @@ public class SpaceDetailFragment extends SupportFragment {
         mImage.setVisibility(View.VISIBLE);
 
         mAdapter = new EventAdapter(getActivity());
+        mAdapter.setListener(this);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(),mAdapter.getSpanCount());
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -169,6 +171,11 @@ public class SpaceDetailFragment extends SupportFragment {
         mAdapter.setData(data, done);
         if(done)
             mSwipeRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void onEventItemClick(EventType eventType) {
+        getNavigationController().presentFragment(BookingFragment.newInstance(mSpace,eventType));
     }
 
     private static class CountingSpacesTask extends AsyncTask<Void,Void,Void> {
