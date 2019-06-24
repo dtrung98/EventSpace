@@ -397,9 +397,13 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         mOrder.setServices(mAdapter.getData());
         Calendar calendar = Calendar.getInstance();
         mOrder.setPurchaseTime(getCurrentDate());
-        mOrder.setId(mUser.getUid()+"_"+mEventType.getStaticName()+"_"+mSpace.getId());
 
         mUserInfo.setBalance(mUserInfo.getBalance() - mPrice);
+        int i = 1;
+        do {
+            mOrder.setId(mUser.getUid() + "_" + mEventType.getStaticName() + "_" + mSpace.getId() + "_" + i);
+            i++;
+        } while (mUserInfo.getOrderIDs().contains(mOrder.getId()));
         mUserInfo.getOrderIDs().add(mOrder.getId());
 
         mSendingDialog = new BottomSheetDialog(getActivity());
