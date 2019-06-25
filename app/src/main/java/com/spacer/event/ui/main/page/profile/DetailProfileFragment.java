@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.spacer.event.R;
+import com.spacer.event.ui.main.page.booking.BookingAdapter;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
 
@@ -38,7 +39,9 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import es.dmoral.toasty.Toasty;
 
 public class DetailProfileFragment extends SupportFragment {
@@ -144,6 +147,7 @@ public class DetailProfileFragment extends SupportFragment {
                             str_month = "0" + str_month;
                         }
                         txtBirthday.setText(String.format("%s/%s/%d", str_day, str_month, year));
+                        onDataChanged();
                     }
                 },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),  newCalendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -152,16 +156,26 @@ public class DetailProfileFragment extends SupportFragment {
 
     @OnClick(R.id.btn_back)
      void back(){
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setContentView(R.layout.bottom_alert);
-        bottomSheetDialog.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-                getMainActivity().dismiss();
-            }
-        });
-        bottomSheetDialog.show();;
+        if(mIsDataChanged) {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+            bottomSheetDialog.setContentView(R.layout.bottom_alert);
+            bottomSheetDialog.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetDialog.dismiss();
+                    getMainActivity().dismiss();
+                }
+            });
+            bottomSheetDialog.show();
+        } else {
+            getMainActivity().dismiss();
+        }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        back();
+        return false;
     }
 
     @OnClick(R.id.btn_save)
@@ -231,6 +245,23 @@ public class DetailProfileFragment extends SupportFragment {
             }
         });
     }
+    private boolean mIsDataChanged =false;
+    private boolean mIsDataDisplayed = false;
+    private void onDataChanged() {
+        if(mIsDataDisplayed)
+        mIsDataChanged = true;
+        else mIsDataChanged = false;
+    }
+
+    @OnTextChanged({R.id.txt_fullname,R.id.txt_email,R.id.txt_phonenumber,R.id.txt_address})
+    void onEditChanged() {
+        onDataChanged();
+    }
+
+    @OnCheckedChanged({R.id.rad_male,R.id.rad_female,R.id.rad_other})
+    void onGenderChanged() {
+        onDataChanged();
+    }
 
     @SuppressLint("DefaultLocale")
     private void displayUserProfile() {
@@ -241,7 +272,7 @@ public class DetailProfileFragment extends SupportFragment {
             Glide.with(this).load(userInfo.getAvaUrl()).into(avatar);
         }
 
-        balance.setText(String.format("%d", userInfo.getBalance()));
+        balance.setText(BookingAdapter.formatMoney(userInfo.getBalance()));
         edtFullName.setText(userInfo.getFullName());
         edtEmail.setText(userInfo.getEmail());
         edtPhoneNumber.getEditText().setText(userInfo.getPhoneNumber());
@@ -257,6 +288,7 @@ public class DetailProfileFragment extends SupportFragment {
         else if(userInfo.getGender() == 2){
             radOther.toggle();
         }
+        mIsDataDisplayed = true;
     }
 
     private void sendUserInfoToFirebase() {

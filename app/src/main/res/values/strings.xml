@@ -19,7 +19,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="retype_password">Retype password</string>
-    <string name="privacy">Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật của Event Space.</string>
+    <string name="privacy">I agree to the terms and privacy policy</string>
     <string name="btn_create">Get Started</string>
     <string name="string_already">Already have an account?</string>
     <string name="sign_in">Sign In</string>
@@ -42,7 +42,7 @@
     <string name="user_phonenumber">Phone number</string>
     <string name="user_address">Address</string>
     <string name="btn_save">Save</string>
-    <string name="user_balance">Balance</string>
+    <string name="user_balance">Your Balance</string>
     <string name="about">About</string>
     <string name="phone">Phone</string>
     <string name="address">Address</string>
@@ -71,6 +71,11 @@
     <string name="purchase_now">Purchase now</string>
     <string name="not_enough_money">Not enough money to pay</string>
     <string name="sending_data">Sending data...</string>
+    <string name="plz_refresh">Data error, please refresh again</string>
+    <string name="plz_fill_number">Please fill this field by number</string>
+    <string name="number_greater_than_zero">The number must be greater than zero</string>
+    <string name="purchase_note">Please bring this identity card when you go to the space .Thank you</string>
+    <string name="unit">unit</string>
 
 
 </resources>

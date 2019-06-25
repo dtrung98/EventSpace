@@ -52,7 +52,7 @@ public class PurchaseScreen extends SupportFragment {
         mDateTo.setText(mOrder.getDateTo());
         mPurchaseDate.setText(mOrder.getPurchaseTime());
 
-        mPrice.setText(ServiceBookingAdapter.formatMoney(mOrder.getPrice()));
+        mPrice.setText(BookingAdapter.formatMoney(mOrder.getPrice()));
     }
 
     @OnClick(R.id.back_button)

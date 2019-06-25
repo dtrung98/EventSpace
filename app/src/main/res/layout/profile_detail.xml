@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,25 +45,28 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="start"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
                 android:adjustViewBounds="true"
-                android:background="#070707"
+                android:background="@color/DarkerBlack"
                 app:riv_border_color="@color/FocusYellowColor"
                 app:riv_border_width="2dp"
-                app:riv_corner_radius="5dp"
+                android:scaleType="centerCrop"
+                app:riv_oval="true"
                 app:riv_mutate_background="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_gravity="center_vertical"
                 android:paddingStart="20dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/user_balance"
-                    android:textSize="20sp"/>
+                    android:textColor="@color/FocusYellowColor"
+                    android:textSize="16sp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -73,14 +77,9 @@
                         android:id="@+id/txtBalance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        tools:text="0"
+                        android:textColor="@color/FocusYellowColor"
                         android:textSize="20sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:text="VND"
-                        android:textSize="20sp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -88,15 +87,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
             android:text="@string/user_fullname"
-            android:textSize="20sp"/>
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
         <android.support.design.widget.TextInputLayout
             android:id="@+id/edi_fullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
             android:layout_gravity="center"
             app:errorEnabled="true"
             app:hintEnabled="false">
@@ -105,41 +109,46 @@
                 android:id="@+id/txt_fullname"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:background="@drawable/rounded_corner_without_border_dark"
                 android:singleLine="true"
                 android:textColor="@color/FocusYellowColor"
-                android:textSize="17sp"/>
+                android:textSize="15sp"/>
         </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
-            android:layout_marginTop="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
             android:text="@string/email"
-            android:textSize="20sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
         <android.support.design.widget.TextInputLayout
             android:id="@+id/edi_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:layout_gravity="center"
             app:errorEnabled="true"
+            android:layout_marginTop="8dp"
             app:hintEnabled="false">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/txt_email"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:background="@drawable/rounded_corner_without_border_dark"
                 android:singleLine="true"
                 android:textColor="@color/FocusYellowColor"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:inputType="textEmailAddress"
                 android:enabled="false"/>
         </android.support.design.widget.TextInputLayout>
@@ -147,17 +156,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginTop="10dp"
             android:text="@string/user_gender"
-            android:textSize="20sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
         <RadioGroup
             android:id="@+id/rad_group_gender"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp">
 
             <RadioButton
                 android:id="@+id/rad_male"
@@ -165,44 +179,55 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/user_gender_male"
-                android:textSize="17sp"/>
+                android:textStyle="bold"
+                android:textColor="@color/FlatWhite"
+                android:textSize="14sp"/>
             <RadioButton
                 android:id="@+id/rad_female"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/user_gender_female"
-                android:textSize="17sp"/>
+                android:textColor="@color/FlatWhite"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
             <RadioButton
                 android:id="@+id/rad_other"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/user_gender_other"
-                android:textSize="17sp"/>
+                android:textColor="@color/FlatWhite"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
         </RadioGroup>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
-            android:layout_marginTop="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/user_birthday"
-            android:textSize="20sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/txt_birthday"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/rounded_corner_without_border_dark"
             android:singleLine="true"
-            android:textColor="@color/colorPrimary"
-            android:textSize="17sp"
+            android:textColor="@color/FocusYellowColor"
+            android:textSize="15sp"
             android:hint="@string/user_format_birthday"
             android:clickable="true"
             android:focusable="true"/>
@@ -210,16 +235,22 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
-            android:layout_marginTop="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/user_phonenumber"
-            android:textSize="20sp"/>
+            android:textSize="16sp"
+            android:textStyle="bold"/>
         <android.support.design.widget.TextInputLayout
             android:id="@+id/edi_phonenumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="8dp"
+
             android:layout_gravity="center"
             app:errorEnabled="true"
             app:hintEnabled="false">
@@ -228,29 +259,34 @@
                 android:id="@+id/txt_phonenumber"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:background="@drawable/rounded_corner_without_border_dark"
                 android:drawablePadding="5dp"
                 android:singleLine="true"
                 android:textColor="@color/FocusYellowColor"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:inputType="phone"/>
         </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginTop="5dp"
             android:text="@string/user_address"
-            android:textSize="20sp"/>
+            android:textStyle="bold"
+            android:textSize="16sp"/>
         <android.support.design.widget.TextInputLayout
             android:id="@+id/edi_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp"
             android:layout_gravity="center"
             app:errorEnabled="true"
             app:hintEnabled="false">
@@ -259,12 +295,12 @@
                 android:id="@+id/txt_address"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:background="@drawable/rounded_corner_without_border_dark"
                 android:singleLine="true"
-                android:textColor="@color/colorPrimary"
-                android:textSize="17sp"/>
+                android:textColor="@color/FocusYellowColor"
+                android:textSize="15sp"/>
         </android.support.design.widget.TextInputLayout>
         <Button
             android:id="@+id/btn_save"
@@ -274,7 +310,7 @@
             android:layout_gravity="center_horizontal"
             android:textColor="@color/FocusYellowColor"
             android:text="@string/btn_save"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/google_white_background"
             android:textStyle="bold"/>
     </LinearLayout>

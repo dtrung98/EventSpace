@@ -5,66 +5,54 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.Adapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 import com.spacer.event.R;
 import com.spacer.event.listener.FireBaseCollectionListener;
 import com.spacer.event.listener.FireBaseGetDocumentResultListener;
-import com.spacer.event.listener.FireBaseSetDocumentResultListener;
 import com.spacer.event.model.EventOrder;
 import com.spacer.event.model.EventType;
 import com.spacer.event.model.Service;
 import com.spacer.event.model.Space;
 import com.spacer.event.model.UserInfo;
 import com.spacer.event.ui.main.MainActivity;
-import com.spacer.event.ui.main.page.SamplePageThree;
 import com.spacer.event.ui.main.page.eventspace.SpaceDetailFragment;
 import com.spacer.event.ui.main.page.inout.SignInFragment;
 import com.spacer.event.ui.widget.SuccessTickView;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.PresentStyle;
 import com.spacer.event.ui.widget.fragmentnavigationcontroller.SupportFragment;
-import com.spacer.event.util.Constant;
 import com.spacer.event.util.SignInOutStatusChanged;
 import com.tuyenmonkey.mkloader.MKLoader;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import es.dmoral.toasty.Toasty;
 
-public class BookingFragment extends SupportFragment implements SignInOutStatusChanged, ServiceBookingAdapter.OnPriceChangedListener {
+public class BookingFragment extends SupportFragment implements SignInOutStatusChanged, BookingAdapter.OnPriceChangedListener {
     private static final String TAG = "BookingFragment";
 
     public static BookingFragment newInstance(Space space, EventType eventType) {
@@ -79,7 +67,26 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
 
     @OnClick(R.id.back)
     void back() {
-        getNavigationController().dismissFragment();
+        if(!mAdapter.getData().isEmpty()) {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+            bottomSheetDialog.setContentView(R.layout.bottom_alert);
+            bottomSheetDialog.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bottomSheetDialog.dismiss();
+                    getNavigationController().dismissFragment();
+                }
+            });
+            bottomSheetDialog.show();
+        } else {
+            getNavigationController().dismissFragment();
+        }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        back();
+        return false;
     }
 
     @BindView(R.id.space_image)
@@ -174,7 +181,6 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         mLoader.setVisibility(View.GONE);
         mContinueIcon.setVisibility(View.VISIBLE);
         if(mOrder.getDateTo().isEmpty()||mOrder.getDateFrom().isEmpty()) {
-
             mContinueIcon.setEnabled(false);
             mContinueIcon.setColorFilter(0xff555555);
             mContinueIcon.setBackgroundResource(R.drawable.background_continue_disable);
@@ -198,8 +204,6 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
             mContinueIcon.setVisibility(View.INVISIBLE);
             mLoader.setVisibility(View.VISIBLE);
             refreshData();
-        } else {
-
         }
     }
 
@@ -217,7 +221,7 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
 
-        mAdapter = new ServiceBookingAdapter(getContext());
+        mAdapter = new BookingAdapter(getContext());
         mAdapter.setOnPriceChangedListener(this);
 
         mRecylerView.setAdapter(mAdapter);
@@ -229,7 +233,6 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         if(getActivity() instanceof MainActivity) {
             ((MainActivity)getActivity()).addSignInOutStatusListener(this);
         }
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
         bind();
     }
 
@@ -245,10 +248,19 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
     private static int UN_SET = 0;
     private static int SUCCESS = 1;
     private static int FAILURE = 2;
+    private FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
+    private UserInfo getCurrentUserInfo() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user!=null&&mPrivateUserInfo!=null&&user.getUid().equals(mPrivateUserInfo.getId())) return mPrivateUserInfo;
+        return null;
+    }
 
     private void refreshData() {
         mRefreshResult[0] = UN_SET;
         mRefreshResult[1] = UN_SET;
+
         if (mOrder.getDateTo().isEmpty() || mOrder.getDateFrom().isEmpty()) {
             mSwipeRefresh.setRefreshing(false);
         } else {
@@ -258,22 +270,31 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
                     .get()
                     .addOnFailureListener(mServiceListener)
                     .addOnSuccessListener(mServiceListener);
-            if(mUser!=null)
+            if(getCurrentUser()!=null)
                 FirebaseFirestore.getInstance()
                 .collection("user_infos")
-                        .document(mUser.getUid())
+                        .document(getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(mUserInforListener)
                 .addOnFailureListener(mUserInforListener);
             else mRefreshResult[1]=SUCCESS;
         }
     }
-    private void refreshUserInfoData() {
 
-    }
-    private String getCurrentDate() {
+    @SuppressLint({"DefaultLocale", "SimpleDateFormat"})
+    private String getCurrentDate(boolean time) {
+
+
+
         Calendar calendar = Calendar.getInstance();
-        String str_day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+
+        SimpleDateFormat sdf;
+        if(time)
+       sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        else sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(calendar.getTime());
+
+        /*String str_day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
         String str_month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
         if (1 == str_day.length()) {
             str_day = "0" + str_day;
@@ -281,13 +302,14 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         if (1 == str_month.length()) {
             str_month = "0" + str_month;
         }
-        return String.format("%s/%s/%d", str_day,str_month,calendar.get(Calendar.YEAR));
+        if(time) return String.format("%s %s/%s/%d",calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.Mi) str_day,str_month,calendar.get(Calendar.YEAR));
+        return String.format("%s/%s/%d", str_day,str_month,calendar.get(Calendar.YEAR));*/
     }
 
     @SuppressLint("DefaultLocale")
     private void bind() {
 
-        mOrder.setDateFrom(getCurrentDate());
+        mOrder.setDateFrom(getCurrentDate(false));
         mDateFrom.setText(mOrder.getDateFrom());
         checkoutAbleToRefreshing();
 
@@ -354,41 +376,67 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
     @BindView(R.id.purchase_price) TextView mPurchasePrice;
     @BindView(R.id.purchase_text) TextView mPurchaseText;
 
-    FirebaseUser mUser;
-    private void checkingPurchaseStatus() {
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(mUser==null||mUserInfo==null) {
+    private final static int NOT_SIGNED_IN = 1;
+    private final static int NO_USER_INFO = 2;
+    private final static int NOT_ENOUGH_MONEY = 3;
+    private final static int PURCHASE_OK = 4;
+
+    private int mPurchaseStatus = UN_SET;
+
+    private void bindPurchaseButton() {
+        if(mPurchaseStatus==UN_SET) checkPurchaseStatus();
+
+        if(mPurchaseStatus==NOT_SIGNED_IN) {
             mPurchasePrice.setVisibility(View.GONE);
             mPurchaseText.setText(R.string.plz_sign_in);
             mPurchasePanel.setBackgroundResource(R.drawable.background_sign_in);
-        } else if(mUserInfo.getBalance()<mPrice) {
+            mPurchasePanel.setEnabled(true);
+        } else if(mPurchaseStatus==NO_USER_INFO) {
+           mPurchasePrice.setVisibility(View.GONE);
+           mPurchaseText.setText(R.string.plz_refresh);
+           mPurchasePanel.setBackgroundResource(R.drawable.background_warn);
+           mPurchasePanel.setEnabled(true);
+        }
+        else if(mPurchaseStatus==NOT_ENOUGH_MONEY) {
             mPurchasePrice.setVisibility(View.VISIBLE);
-            mPurchasePrice.setText("Total Price : "+ServiceBookingAdapter.formatMoney(mPrice));
+            mPurchasePrice.setText("Total Price : "+ BookingAdapter.formatMoney(mPrice));
             mPurchaseText.setText(R.string.not_enough_money);
             mPurchasePanel.setEnabled(false);
             mPurchasePanel.setBackgroundResource(R.drawable.background_purchase_disable);
-        }
-        else {
+        } else {
             mPurchasePrice.setVisibility(View.VISIBLE);
-            mPurchasePrice.setText("Total Price : "+ServiceBookingAdapter.formatMoney(mPrice));
+            mPurchasePrice.setText("Total Price : "+ BookingAdapter.formatMoney(mPrice));
             mPurchaseText.setText(R.string.purchase_now);
             mPurchasePanel.setBackgroundResource(R.drawable.background_purchase);
+            mPurchasePanel.setEnabled(true);
         }
+    }
+
+    private void checkPurchaseStatus() {
+
+        if(getCurrentUser()==null) mPurchaseStatus = NOT_SIGNED_IN;
+        else if(getCurrentUserInfo()==null) mPurchaseStatus = NO_USER_INFO;
+        else if(getCurrentUserInfo().getBalance()<mPrice) mPurchaseStatus = NOT_ENOUGH_MONEY;
+        else mPurchaseStatus = PURCHASE_OK;
+        bindPurchaseButton();
     }
 
     @OnClick(R.id.purchase_panel)
     void tryToPurchase() {
-        if(mPurchasePrice.getVisibility()==View.GONE) {
-            getNavigationController().presentFragment(SignInFragment.newInstance());
-        } else {
-            //Toasty.success(mPurchaseText.getContext(),"Ok, u'll get it soon").show();
-            purchaseNow();
+        if(mPurchaseStatus==UN_SET) checkPurchaseStatus();
+
+        switch (mPurchaseStatus) {
+            case NOT_SIGNED_IN: getNavigationController().presentFragment(SignInFragment.newInstance()); break;
+            case NO_USER_INFO:refreshData();
+            case NOT_ENOUGH_MONEY:break;
+            case PURCHASE_OK: purchaseNow();
         }
     }
 
     void purchaseNow() {
-        if(mUser==null||mUserInfo==null||mUserInfo.getBalance()<mPrice) return;
-        mOrder.setUserUID(mUser.getUid());
+        if(getCurrentUser()==null||getCurrentUserInfo()==null) return;
+
+        mOrder.setUserUID(getCurrentUserInfo().getId());
         mOrder.setEvent(mEventType.getStaticName());
         mOrder.setTitle(mEventType.getName());
         mOrder.setPrice(mPrice);
@@ -396,21 +444,23 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         mOrder.setSpaceName(mSpace.getName());
         mOrder.setServices(mAdapter.getData());
         Calendar calendar = Calendar.getInstance();
-        mOrder.setPurchaseTime(getCurrentDate());
+        mOrder.setPurchaseTime(getCurrentDate(true));
 
-        mUserInfo.setBalance(mUserInfo.getBalance() - mPrice);
+        mPrivateUserInfo.setBalance(mPrivateUserInfo.getBalance() - mPrice);
         int i = 1;
         do {
-            mOrder.setId(mUser.getUid() + "_" + mEventType.getStaticName() + "_" + mSpace.getId() + "_" + i);
+            mOrder.setId(getCurrentUserInfo().getId()+ "_" + mEventType.getStaticName() + "_" + mSpace.getId() + "_" + i);
             i++;
-        } while (mUserInfo.getOrderIDs().contains(mOrder.getId()));
-        mUserInfo.getOrderIDs().add(mOrder.getId());
+        } while (mPrivateUserInfo.getOrderIDs().contains(mOrder.getId()));
+        mPrivateUserInfo.getOrderIDs().add(mOrder.getId());
 
-        mSendingDialog = new BottomSheetDialog(getActivity());
+        mSendingDialog = new BottomSheetDialog(mSwipeRefresh.getContext());
 
-        mSendingDialog.setContentView(R.layout.send_new_movie);
+        mSendingDialog.setContentView(R.layout.sending_data);
         mSendingDialog.setCancelable(false);
-        mSendingDialog.findViewById(R.id.close).setOnClickListener(v -> cancelSending());
+        View closeButton = mSendingDialog.findViewById(R.id.close);
+        if(closeButton!=null)
+        closeButton.setOnClickListener(v -> cancelSending());
         mSendingDialog.show();
 
         FirebaseFirestore.getInstance()
@@ -420,8 +470,8 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
                 .addOnSuccessListener(aVoid -> {
                 FirebaseFirestore.getInstance()
                         .collection("user_infos")
-                        .document(mUser.getUid())
-                        .update("balance",mUserInfo.getBalance(),"orderIDs",mUserInfo.getOrderIDs())
+                        .document(mPrivateUserInfo.getId())
+                        .update("balance",mPrivateUserInfo.getBalance(),"orderIDs",mPrivateUserInfo.getOrderIDs())
                         .addOnSuccessListener(aVoid1 -> {
                             setOnSuccess();
                         })
@@ -442,6 +492,7 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
             mSendingDialog.dismiss();
         cancelled = true;
     }
+
     void setTextSending(String text,int color) {
         if(mSendingDialog!=null) {
             TextView textView = mSendingDialog.findViewById(R.id.sending_text);
@@ -485,11 +536,11 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
 
     void showTicketPrint() {
         getNavigationController().dismissFragment();
-        getNavigationController().presentFragment(PurchaseScreen.newInstance(mOrder,mUserInfo));
+        getNavigationController().presentFragment(PurchaseScreen.newInstance(mOrder,mPrivateUserInfo));
     }
 
     private ArrayList<Service> mAllServices = new ArrayList<>();
-    private ServiceBookingAdapter mAdapter;
+    private BookingAdapter mAdapter;
     private void showService() {
         ArrayList<Service> list = new ArrayList<>();
         list.clear();
@@ -516,7 +567,7 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
             @Override
             public void run() {
                 mScrollView.smoothScrollTo(0, (int) mServiceTitle.getY());
-                checkingPurchaseStatus();
+                checkPurchaseStatus();
 
             }
         },350);
@@ -556,17 +607,17 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
         public void onSuccess(DocumentSnapshot documentSnapshot) {
             if(documentSnapshot.exists()) {
                 mRefreshResult[1] = SUCCESS;
-                mUserInfo = documentSnapshot.toObject(UserInfo.class);
+                mPrivateUserInfo = documentSnapshot.toObject(UserInfo.class);
             } else {
                 mRefreshResult[1] = FAILURE;
                 if(getContext()!=null)
-                Toasty.error(getContext(),"Sorry, can not get you balance!!").show();
+                Toasty.error(getContext(),"Sorry, can not get your profile!!").show();
             }
             checkResult();
 
         }
     };
-    private UserInfo mUserInfo;
+    private UserInfo mPrivateUserInfo;
 
     @Override
     public void onJustSignIn(FirebaseUser user) {
@@ -582,6 +633,6 @@ public class BookingFragment extends SupportFragment implements SignInOutStatusC
     @Override
     public void onPriceChanged(int newPrice) {
         mPrice = newPrice;
-        checkingPurchaseStatus();
+        checkPurchaseStatus();
     }
 }

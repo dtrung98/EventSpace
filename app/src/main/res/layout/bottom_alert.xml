@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/panel_background">
+    android:background="@color/DarkerColorL3">
     <TextView
         android:id="@+id/ask"
         android:layout_width="0dp"
@@ -32,6 +32,7 @@
         android:text="@string/okay_i_know"
         android:paddingEnd="15dp"
         android:paddingStart="15dp"
+        android:background="@drawable/round_support_touch"
         android:gravity="center"
         android:textColor="@color/FlatRed"
         android:enabled="true" />

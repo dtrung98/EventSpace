@@ -1,7 +1,6 @@
 package com.spacer.event.ui.main;
 
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,7 +50,7 @@ public class MainActivity extends BaseEventSpaceActivity  {
 
     @Override
     public void onBackPressed() {
-        if(mNavigationController.getTopFragment().isReadyToDismiss())
+        if(mNavigationController.getTopFragment().onBackPressed())
             if(!(isNavigationControllerInit() && mNavigationController.dismissFragment(true)))
                 super.onBackPressed();
     }

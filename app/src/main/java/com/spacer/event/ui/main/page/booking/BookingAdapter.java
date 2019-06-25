@@ -1,5 +1,6 @@
 package com.spacer.event.ui.main.page.booking;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,27 +10,25 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.spacer.event.R;
 import com.spacer.event.model.Service;
-import com.spacer.event.util.SignInOutStatusChanged;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
+import es.dmoral.toasty.Toasty;
 
-public class ServiceBookingAdapter extends RecyclerView.Adapter<ServiceBookingAdapter.ItemHolder> {
-    private static final String TAG = "ServiceBookingAdapter";
+public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ItemHolder> {
+    private static final String TAG = "BookingAdapter";
     private Context mContext;
     private ArrayList<Service> mData = new ArrayList<>();
 
-    ServiceBookingAdapter(Context context) {
+    BookingAdapter(Context context) {
         mContext = context;
     }
 
@@ -109,6 +108,21 @@ public class ServiceBookingAdapter extends RecyclerView.Adapter<ServiceBookingAd
           onPriceChanged();
         }
 
+        @OnTextChanged(R.id.count)
+        void onTextChanged(CharSequence text) {
+            try {
+                int number = Integer.parseInt(text.toString());
+                if(number<=0) Toasty.warning(mCount.getContext(),R.string.number_greater_than_zero).show();
+                else if(number!=mData.get(getAdapterPosition()).getCount()){
+                    mData.get(getAdapterPosition()).setCount(number);
+                    bindPrice(mData.get(getAdapterPosition()));
+                    onPriceChanged();
+                }
+            } catch (NumberFormatException e) {
+                Toasty.warning(mCount.getContext(), R.string.plz_fill_number).show();
+            }
+        }
+
         @OnClick(R.id.plus)
         void plus() {
             int count =  mData.get(getAdapterPosition()).getCount();
@@ -117,12 +131,13 @@ public class ServiceBookingAdapter extends RecyclerView.Adapter<ServiceBookingAd
             onPriceChanged();
         }
 
+        @SuppressLint("DefaultLocale")
         @Override
         public void bindPrice(Service service) {
 
-            mCount.setText(""+service.getCount());
-            mPriceUnit.setText(""+service.getPrimaryPrice());
-            if(service.isBonusService()) mPrice.setText(R.string.free);
+            mCount.setText(String.format("%d", service.getCount()));
+            mPriceUnit.setText(String.format("%s/%s", formatMoney(service.getPrimaryPrice()), mPriceUnit.getContext().getString(R.string.unit)));
+            if(service.getIsBonusService()) mPrice.setText(R.string.free);
             else {
                 int price = service.getPrice();
                 mPrice.setText(formatMoney(price));
@@ -143,7 +158,7 @@ public class ServiceBookingAdapter extends RecyclerView.Adapter<ServiceBookingAd
     class NotCountingItemHolder extends ItemHolder {
         @Override
         public void bindPrice(Service service) {
-            if(service.isBonusService()) mPrice.setText(R.string.free);
+            if(service.getIsBonusService()) mPrice.setText(R.string.free);
             else mPrice.setText(formatMoney(service.getPrimaryPrice()));
         }
 
@@ -171,7 +186,7 @@ public class ServiceBookingAdapter extends RecyclerView.Adapter<ServiceBookingAd
             mName.setText(service.getDetail());
             mOptions.setText(String.format("%s", service.getName()));
 
-            if(service.isBonusService()) {
+            if(service.getIsBonusService()) {
                 mBonusText.setVisibility(View.VISIBLE);
                 itemView.setBackgroundResource(R.drawable.background_item_bonus_service);
             }

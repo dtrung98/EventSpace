@@ -52,7 +52,7 @@
                 android:id="@+id/user_const"
                 android:layout_width="75dp"
                 android:layout_height="0dp"
-                android:text="User : "
+                android:text="User :"
                 android:textColor="@color/setting_label_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -77,7 +77,7 @@
                 android:id="@+id/event_const"
                 android:layout_width="75dp"
                 android:layout_height="0dp"
-                android:text="Event : "
+                android:text="Event :"
                 android:textColor="@color/setting_label_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -121,7 +121,7 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/FlatBlue"
-                android:text="Trung tâm sự kiện Âu Lạc"
+                tools:text="Trung tâm sự kiện Âu Lạc"
                 android:textAllCaps="true"/>
             <TextView
                 android:id="@+id/date_from_const"
@@ -196,7 +196,7 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/FlatBlue"
-                android:text="12/01/2019"
+                tools:text="12/01/2019"
                 android:textAllCaps="true"/>
             <TextView
                 android:id="@+id/price_const"
@@ -221,14 +221,14 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/FlatBlue"
-                android:text="200000 vnd"
+                tools:text="200000 vnd"
                 android:textAllCaps="true"/>
             <TextView
                 android:id="@+id/note_const"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:text="Please bring this identity card when you go to the space .Thank you"
-                android:textColor="#555"
+                android:text="@string/purchase_note"
+                android:textColor="#888"
                 android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintTop_toBottomOf="@id/price"

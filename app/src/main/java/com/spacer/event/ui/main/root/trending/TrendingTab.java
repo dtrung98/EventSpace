@@ -25,7 +25,6 @@ import com.spacer.event.model.EventType;
 import com.spacer.event.model.Index;
 import com.spacer.event.model.Space;
 import com.spacer.event.ui.main.MainActivity;
-import com.spacer.event.ui.main.page.booking.BookingBottomSheet;
 import com.spacer.event.ui.main.page.booking.BookingFragment;
 import com.spacer.event.ui.main.page.eventspace.EventDetailFragment;
 import com.spacer.event.ui.main.page.eventspace.SpaceDetailFragment;
@@ -231,8 +230,6 @@ public class TrendingTab extends Fragment  implements AppBarLayout.OnOffsetChang
                 activity.presentFragment(SpaceDetailFragment.newInstance(mSpaces,mEvents,(Space)object));
             } else if(object instanceof EventSpaceTrending) {
                 EventSpaceTrending es = (EventSpaceTrending)object;
-              /*  BookingBottomSheet bookingBottomSheet = BookingBottomSheet.newInstance(es.space,es.event);
-                bookingBottomSheet.show(getChildFragmentManager(),"BookingBottomSheet");*/
               activity.presentFragment(BookingFragment.newInstance(es.space,es.event));
             }
         }

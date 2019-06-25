@@ -41,4 +41,7 @@
     <color name="panel_background">#090909</color>
     <color name="setting_label_color">#B8B8B8</color>
     <color name="cardColor">#1F1C26</color>
+    <color name="DarkerColorL3">#161218</color>
+    <color name="GradientRed">#ff1361</color>
+    <color name="DribbleBlue">#3C245C</color>
 </resources>

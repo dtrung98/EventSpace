@@ -186,7 +186,11 @@ public class ProfileTab extends Fragment implements SignInOutStatusChanged {
                Glide.with(this)
                        .load(uri)
                        .placeholder(R.drawable.user_gender_undefined)
-                       .error(errorRes)
+                       .error(
+                               Glide.with(this)
+                                       .load((mUserInfo!=null) ? mUserInfo.getAvaUrl() : "")
+                                       .placeholder(R.drawable.user_gender_undefined)
+                                       .error(errorRes))
                        .into(mAvatar);
            }catch (Exception ignored) {}
         }

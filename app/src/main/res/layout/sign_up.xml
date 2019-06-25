@@ -185,7 +185,7 @@
                 android:background="@drawable/google_white_background"
                 android:gravity="center"
                 android:text="@string/btn_create"
-                android:textColor="#ff1361"
+                android:textColor="@color/GradientRed"
                 android:textSize="17sp"
                 android:textStyle="bold" />
             <TextView

@@ -67,11 +67,11 @@ public class Service {
         this.detail = detail;
     }
 
-    public boolean isBonusService() {
+    public boolean getIsBonusService() {
         return isBonusService;
     }
 
-    public void setBonusService(boolean bonusService) {
+    public void setIsBonusService(boolean bonusService) {
         isBonusService = bonusService;
     }
 

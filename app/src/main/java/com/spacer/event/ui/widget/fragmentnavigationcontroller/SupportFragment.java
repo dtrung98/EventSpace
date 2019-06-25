@@ -105,7 +105,13 @@ public abstract class SupportFragment extends Fragment {
         return DEFAULT_DURATION;
     }
 
-    public boolean isReadyToDismiss(){
+    /**
+     *  This method is called when user press the back button
+     * @return true to allow the fragment to be dismissed
+     * <br>      false to ignore the dismissed.
+     * <br> To dismiss the fragment, you need to call method <i>getNavigationController().dismiss()</i> directly
+     */
+    public boolean onBackPressed(){
         return true;
     }
 
